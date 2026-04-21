@@ -7,8 +7,8 @@ A android app that help you build healthy social habit, by reducing screen time.
 
 * A working APK installer
 * A working interface that i can:
-** select the app to monitor
-** select the time to reminder
+  * select the app to monitor
+  * select the time to reminder
 * can live in the os background without getting killed off
 * can connect to UsageStatsManager  to fetch app usage
 
