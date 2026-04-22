@@ -3,5 +3,13 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
+  },
+
+  "files.exclude": {
+    "*.md": true,
+    "LICENSE": true,
+    ".gitignore": true,
+    "expo-env.d.ts": true,
+    ".expo": true,
   }
 }

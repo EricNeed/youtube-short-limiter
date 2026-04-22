@@ -16,6 +16,7 @@ A android app that help you build healthy social habit, by reducing screen time.
 
 # Nice to have
 
+* light/dark mode toggle and request for device theme
 * group multiple app and share one timer
 * per day configuration to set longer limit for weekend and week days
 * summary for daily and weekly usage
