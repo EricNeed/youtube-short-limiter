@@ -20,10 +20,30 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.yourname.screentracker",
+      "permissions": [
+        "PACKAGE_USAGE_STATS",
+        "FOREGROUND_SERVICE",
+        "WAKE_LOCK",
+        "POST_NOTIFICATIONS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+
+    "plugins": [
+      "expo-dev-client",
+      "expo-notifications",
+      "expo-task-manager"
+    ],
+
+    "extra": {
+      "eas": {
+        "projectId": "7eb3f7dd-f727-4fae-b426-3a967cdf1626"
+      }
+    },
+    "owner": "eric2026"
   }
 }
