@@ -1,4 +1,21 @@
 file i can change:
     assets
-    .txs files under components
     
+
+always do "npx expo install --check" before push to EAS build
+    npx expo-doctor@latest
+    npx expo install --check
+
+
+build developmental build on EAS
+    eas build --platform android --profile development
+
+
+to get all dependancies to local mashine:
+    npx expo prebuild
+
+
+change expo version(if the current is too new)
+    npx expo install expo@51
+    npm install expo@~55
+
