@@ -12,10 +12,13 @@ build developmental build on EAS
 
 
 to get all dependancies to local mashine:
-    npx expo prebuild
+    npm install
+    npx expo prebuild 
+    npx expo install  expo-android-usagestats @supersami/rn-foreground-service expo-notifications
 
 
 change expo version(if the current is too new)
     npx expo install expo@51
     npm install expo@~55
+
 
