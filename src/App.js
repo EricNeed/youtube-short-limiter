@@ -1,10 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { getUserStatsTest } from './services/user_stats';
+
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={{ color: '#b6adad'}}>hi!</Text>
+      <Text style={{ color: '#c9c9c9'}}>hi!</Text>
       <StatusBar style="auto" />
+      <Button title='vnsfuibhuid' onPress={() => getUserStatsTest()} />
     </View>
   );
 }
@@ -12,8 +15,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: '#000000',
-    backgroundColor: '#b6adad',
+    backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
   },

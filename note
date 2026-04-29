@@ -22,3 +22,5 @@ change expo version(if the current is too new)
     npm install expo@~55
 
 
+remember the popup to guide user to the permission menu
+    setting/apps/3 dot at top right coner/ special access/user data access
