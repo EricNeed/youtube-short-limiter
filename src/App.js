@@ -8,6 +8,7 @@ export default function App() {
       <Text style={{ color: '#c9c9c9'}}>hi!</Text>
       <StatusBar style="auto" />
       <Button title='vnsfuibhuid' onPress={() => getUserStatsTest()} />
+      <Button title='hi' onPress={() => getUserStatsTest()} />
     </View>
   );
 }
