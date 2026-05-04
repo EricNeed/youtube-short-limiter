@@ -4,15 +4,13 @@
     "slug": "shortLimiter",
     "version": "1.0.0",
     "orientation": "portrait",
+    "scheme": "youtube-short-limiter",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
