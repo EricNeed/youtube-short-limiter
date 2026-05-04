@@ -1,27 +1,36 @@
-file i can change:
-    assets
+EAS build precedure
+    npx expo install --check
+    npx expo-doctor@latest
+    eas build --platform android --profile development
     
 
-always do "npx expo install --check" before push to EAS build
-    npx expo-doctor@latest
-    npx expo install --check
-
-
-build developmental build on EAS
-    eas build --platform android --profile development
-
-
-to get all dependancies to local mashine:
-    npm install
-    npx expo prebuild 
+extra dependancies(that blank template not include):
     npx expo install  expo-android-usagestats @supersami/rn-foreground-service expo-notifications
     npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
+    npx expo install react-native-gesture-handler
+    npx expo install react-native-reanimated react-native-worklets
+    npx expo install react-native-gifted-charts expo-linear-gradient react-native-svg
+    npx expo install expo-symbols react-native-paper expo-haptics @react-native-async-storage/async-storage expo-font
 
 
-change expo version(if the current is too new)
-    npx expo install expo@51
+
+uninstall package:
+    npm uninstall <\project-name>
+
+
+check for unused dependancies:
+    npx depcheck
+
+
+download all dependancies in the package-lock.json:
+    npm install
+
+
+get the android folder:
+    npx expo prebuild 
+    
+
+
+framework versions:
+    npm install react@19.2.0 react-dom@19.2.0
     npm install expo@~55
-
-
-remember the popup to guide user to the permission menu
-    setting/apps/3 dot at top right coner/special access/user data access
