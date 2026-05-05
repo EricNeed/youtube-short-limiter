@@ -12,7 +12,9 @@ extra dependancies(that blank template not include):
     npx expo install react-native-gifted-charts expo-linear-gradient react-native-svg
     npx expo install expo-symbols react-native-paper expo-haptics @react-native-async-storage/async-storage expo-font
 
-
+web-version:
+    npx expo install react-native-web
+    press "w" after expo start
 
 uninstall package:
     npm uninstall <\project-name>
