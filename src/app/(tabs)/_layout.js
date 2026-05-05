@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
-import { IconSy } from 'expo-symbols';
+import { SymbolView } from 'expo-symbols';
+import { Text } from 'react-native';
 
 
 export default function TabLayout() {
@@ -11,8 +12,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home'
-          tabBarIcon: <SymbolView name={{}}/>
+          title: 'Home',
+          tabBarIcon: ({color}) => (<SymbolView name={{android: 'home'}} size={30} tintColor={color} fallback={<Text>?🏠?</Text>}/>)
         }}
       />
       <Tabs.Screen
