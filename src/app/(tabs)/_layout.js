@@ -1,4 +1,6 @@
 import { Tabs } from 'expo-router';
+import { IconSy } from 'expo-symbols';
+
 
 export default function TabLayout() {
   return (
@@ -10,7 +12,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home'
-          //tabBarIcon: 
+          tabBarIcon: <SymbolView name={{}}/>
         }}
       />
       <Tabs.Screen
