@@ -1,7 +1,6 @@
 import { Tabs } from 'expo-router';
-import { SymbolView } from 'expo-symbols';
-import { Text } from 'react-native';
 import { mainStyle } from '../../components/scheme_style';
+import { symbolCache } from '../../components/symbol_cache';
 
 export default function TabLayout() {
   return (
@@ -16,19 +15,21 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({color}) => (<SymbolView name={{android: 'home'}} size={30} tintColor={color} fallback={<Text>?🏠?</Text>}/>)
+          tabBarIcon: ({color}) => symbolCache.home(color)
         }}
       />
       <Tabs.Screen
         name="data"
         options={{
-          title: 'data'
+          title: 'data',
+          tabBarIcon: ({color}) => symbolCache.dataUsage(color)
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'settings'
+          title: 'settings',
+          tabBarIcon: ({color}) => symbolCache.settings(color)
         }}
       />
     </Tabs>
