@@ -1,10 +1,10 @@
 import { Text, View } from 'react-native';
 import { mainStyle } from '../../components/scheme_style';
 
-export default function DataScreen() {
+export default function SettingScreen() {
   return (
     <View style={mainStyle.container}>
-      <Text style={mainStyle.text}>Welcome to the data tab! here displays your screen time usage, window width</Text>
+      <Text>Welcome to the settings tab</Text>
     </View>
   );
 }
