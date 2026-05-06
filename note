@@ -36,3 +36,8 @@ get the android folder:
 framework versions:
     npm install react@19.2.0 react-dom@19.2.0
     npm install expo@~55
+
+
+add next:
+    npx expo install @expo/ui
+    

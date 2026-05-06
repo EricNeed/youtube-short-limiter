@@ -1,4 +1,3 @@
-import { SymbolView } from 'expo-symbols';
 import { Dimensions, StyleSheet } from 'react-native';
 
 
@@ -27,8 +26,3 @@ export function setUpStyle(isNight){
     })
 }
 setUpStyle(true);
-
-
-export function AndroidSymbols(SymbolName){
-    return <SymbolView/>
-}

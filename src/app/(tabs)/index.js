@@ -4,7 +4,7 @@ import { mainStyle } from '../../components/scheme_style';
 export default function HomeScreen() {
   return (
     <View style={mainStyle.container}>
-      <Text>Welcome to the Home Tab!</Text>
+      <Text style={mainStyle.text}>Welcome to the Home Tab!</Text>
     </View>
   );
 }

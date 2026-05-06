@@ -15,21 +15,21 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({color}) => symbolCache.home(color)
+          tabBarIcon: ({color, size}) => symbolCache.home(color, size)
         }}
       />
       <Tabs.Screen
         name="data"
         options={{
           title: 'data',
-          tabBarIcon: ({color}) => symbolCache.dataUsage(color)
+          tabBarIcon: ({color, size}) => symbolCache.dataUsage(color, size)
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'settings',
-          tabBarIcon: ({color}) => symbolCache.settings(color)
+          tabBarIcon: ({color, size}) => symbolCache.settings(color, size)
         }}
       />
     </Tabs>
