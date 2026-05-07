@@ -11,7 +11,7 @@ export function setUpStyle(isNight){
         container: {
             flex: 1,
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'top',
             outlineColor: isNight?'#c9c9c9':'#000000',
             backgroundColor: isNight?'#000000':'#000000',
         },
