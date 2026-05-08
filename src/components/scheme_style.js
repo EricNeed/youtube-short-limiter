@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
 
-export let mainStyle;
+export let mainStyle = {};
 
 export function setUpStyle(isNight){
     let wW = Dimensions.get('window').width; 
