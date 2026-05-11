@@ -1,4 +1,3 @@
-import { getInstalledApps } from "expo-android-usagestats";
 import { Stack } from "expo-router";
 import { FlatList, Text, View } from "react-native";
 import { Switch } from "react-native-paper";
@@ -7,8 +6,6 @@ import { mainStyle } from "../../components/scheme_style";
 export default function selectApp(){
 
     const hi = ["1", "2", "3", "4", "5"];
-
-    console.log(getInstalledApps());
 
     //flatlist call this function to draw each button
     const displayButton = ({item}) => {
