@@ -2,7 +2,6 @@ import { getInstalledApps, hasUsageStatsPermission } from "expo-android-usagesta
 import { useEffect, useState } from "react";
 
 
-
 export async function getUserStatsTest(){
     console.log("getting the permission info...");
     console.log( await hasUsageStatsPermission());
@@ -53,8 +52,12 @@ export const getListHook = () => {
 }
 
 
-
-export function getAppListParsed(){
+/**
+ * a function that return a list of all the apps, with a "isTracked" propertie being either true or false depend on if user configure to track this app
+ * @param selectedApps
+ * @returns 
+ */
+export function getAppListParsed(selectedApps){
     const list_data = getListHook();
 
     let parsed_list = [];
@@ -62,7 +65,7 @@ export function getAppListParsed(){
     if(list_data === false){
         console.log("data not ready");
     }else{
-        console.log(list_data);
+        //console.log(list_data);
     }
     return parsed_list;
 }

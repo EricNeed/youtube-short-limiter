@@ -1,9 +1,15 @@
 import { Stack } from "expo-router";
+import { useContext } from "react";
 import { FlatList, Text, View } from "react-native";
 import { Switch } from "react-native-paper";
 import { mainStyle } from "../../components/scheme_style";
+import { SelectedAppContext } from "../../utils/settings/global_var";
 
 export default function selectApp(){
+
+    const apps = useContext(SelectedAppContext);
+
+    console.log(apps);
 
     const hi = ["1", "2", "3", "4", "5"];
 
