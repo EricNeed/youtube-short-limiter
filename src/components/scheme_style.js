@@ -8,7 +8,7 @@ export function setUpStyle(isNight){
     let sF = wW / 360;//360 is the width for my phone, all interfaces are tested on this phone, all proportion are aim to be same as this
 
     mainStyle = StyleSheet.create({
-        container: {
+        container: {//the style of the container
             flex: 1,
             alignItems: 'center',
             justifyContent: 'top',
@@ -19,6 +19,18 @@ export function setUpStyle(isNight){
             fontSize: 14 * sF,
             color: '#c9c9c9',
         },
+
+        borderColor: '#555555',
+        borderWidth: 2,
+
+        switch_container: {//for switch in sittings
+            flexDirection: "row",
+            width: wW,
+            alignSelf: "stretch",
+            justifyContent: "space-between",
+            
+        },
+        
         _internal: {
             windowWidth: wW,
             scaleFactor: sF,
