@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 export const SelectedAppContext = createContext();
 
-const SelectedAppProvider = ({children}) => {
+export const SelectedAppProvider = ({children}) => {
     // a list of all the apps selected by user to track time
     const [apps, setApps] = useState({});//load the selected app from from memory later
 
