@@ -1,7 +1,6 @@
 import { getInstalledApps, hasUsageStatsPermission } from "expo-android-usagestats";
 import { useEffect, useState } from "react";
 
-
 export async function getUserStatsTest(){
     console.log("getting the permission info...");
     console.log( await hasUsageStatsPermission());
@@ -42,7 +41,7 @@ export const getListHook = () => {
         //the getter function that will trigger a re-eecution
         const listGetter = async () => {
             const app_list = await getInstalledApps();
-            console.log("data received");
+            //console.log("data received");
             setReadyState(app_list);
         }
         listGetter();
@@ -58,14 +57,16 @@ export const getListHook = () => {
  * @returns 
  */
 export function getAppListParsed(selectedApps){
-    const list_data = getListHook();
-
-    let parsed_list = [];
-
-    if(list_data === false){
-        console.log("data not ready");
-    }else{
-        //console.log(list_data);
+    const allApps = getListHook();
+    
+    //iterate through all the apps on the device and give it a "isTracked" lable
+    for(let i = 0; i < allApps.length; i++){
+        const app = allApps[i];
+        app.isTracked = !(selectedApps[app.packageName] === undefined);
     }
-    return parsed_list;
+
+    if(allApps === false){
+        return [];
+    }
+    return allApps;
 }

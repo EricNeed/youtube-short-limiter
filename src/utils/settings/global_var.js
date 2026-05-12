@@ -4,12 +4,12 @@ export const SelectedAppContext = createContext();
 
 export const SelectedAppProvider = ({children}) => {
     // a list of all the apps selected by user to track time
-    const [apps, setApps] = useState({});//load the selected app from from memory later
+    const [selectedApps, setAppList] = useState({});//load the selected app from from memory later
 
     //set apps is to give it a new list
-    return <SelectedAppContext.Provider value={apps}>
+    return <SelectedAppContext.Provider value={{selectedApps, setAppList}}>
         {children}{/* all children of the components wrap around can use this provider */}
     </SelectedAppContext.Provider>
 }
 
-export const getSelectedApp = () => useContext(SelectedAppContext);
+export const getSelectedApps = () => useContext(SelectedAppContext);

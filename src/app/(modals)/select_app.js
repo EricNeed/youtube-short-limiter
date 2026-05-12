@@ -1,24 +1,37 @@
 import { Stack } from "expo-router";
-import { useContext } from "react";
 import { FlatList, Text, View } from "react-native";
 import { Switch } from "react-native-paper";
 import { mainStyle } from "../../components/scheme_style";
-import { SelectedAppContext } from "../../utils/settings/global_var";
+import { getAppListParsed } from "../../utils/service_wrapper/user_stats";
+import { getSelectedApps } from "../../utils/settings/global_var";
 
 export default function selectApp(){
 
-    const apps = useContext(SelectedAppContext);
+    const {selectedApps, setAppList} = getSelectedApps();
+    const selectedClone = structuredClone(selectedApps);
+    const appList = getAppListParsed(selectedApps);
 
-    console.log(apps);
-
-    const hi = ["1", "2", "3", "4", "5"];
+    console.log("select app rerendered");
 
     //flatlist call this function to draw each button
     const displayButton = ({item}) => {
-        let isSwitchOn = false;
         return <View style={[mainStyle.switch_container, {borderColor:mainStyle.borderColor, borderBottomWidth:mainStyle.borderWidth}]}>
-            <Text style={mainStyle.text}>hi</Text>
-            <Switch value={isSwitchOn} onValueChange={()=>(console.log("button triggeted"))}/>
+            <Text style={mainStyle.text}>{item.appName}</Text>
+            <Switch 
+                value={item.isTracked} 
+                onValueChange={()=>{
+                    //adding or removing app from a tracking list
+                    if(item.isTracked){
+                        delete selectedClone[item.packageName];
+                    }else{
+                        delete item.icon;
+                        delete item.packageName;
+                        delete item.isTracked;
+                        selectedClone[item.packageName] = item;
+                    }
+                    setAppList(selectedClone);
+                }}
+            />
         </View>
     };
 
@@ -31,7 +44,7 @@ export default function selectApp(){
         }}/>
         <Text style={mainStyle.text} >select application to track: </Text>
         <FlatList
-            data={hi}
+            data={appList}
             renderItem={displayButton}
         />
 
