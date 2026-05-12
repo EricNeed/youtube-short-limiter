@@ -11,8 +11,6 @@ export default function selectApp(){
     const selectedClone = structuredClone(selectedApps);
     const appList = getAppListParsed(selectedApps);
 
-    console.log("select app rerendered");
-
     //flatlist call this function to draw each button
     const displayButton = ({item}) => {
         return <View style={[mainStyle.switch_container, {borderColor:mainStyle.borderColor, borderBottomWidth:mainStyle.borderWidth}]}>
