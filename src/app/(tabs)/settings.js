@@ -1,12 +1,15 @@
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Button, Text } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { HelperText, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { mainStyle } from '../../components/scheme_style';
 import { getSelectedApps } from '../../utils/settings/global_var';
 
 export default function SettingScreen() {
   const routePopup = useRouter()
+
+  const [showError, setShowError] = useState(false);
 
   const {dailyLimit} = getSelectedApps();
 
@@ -26,10 +29,18 @@ export default function SettingScreen() {
         inputMode='numeric'
         textColor={mainStyle.text.color}
         onChangeText={(text) => {
-          console.log(+text);
-
+          const inNumber = +text;//turn to number
+          //handle error and display error message
+          if(isNaN(inNumber)){
+            setShowError(true);
+          }else if(showError){
+            setShowError(false);
+          }
         }}
       />
+      <HelperText type="error" visible={showError}>
+        Input can only be number
+      </HelperText>
 
     </SafeAreaView>
   );
