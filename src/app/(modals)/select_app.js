@@ -22,10 +22,9 @@ export default function selectApp(){
                     if(item.isTracked){
                         delete selectedClone[item.packageName];
                     }else{
-                        delete item.icon;
-                        delete item.packageName;
-                        delete item.isTracked;
-                        selectedClone[item.packageName] = item;
+                        const currentListItem = selectedClone[item.packageName] = {};
+                        currentListItem.appName = item.appName;
+                        currentListItem.category = item.category;
                     }
                     setAppList(selectedClone);
                 }}
