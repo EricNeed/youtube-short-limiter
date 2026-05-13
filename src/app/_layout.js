@@ -18,10 +18,25 @@ ReactNativeForegroundService.register({
   }
 })
 
+function update(){
+  console.log("hi");
+}
 
 ReactNativeForegroundService.add_task(() => update(), {
   delay: 1000,
   onLoop: true,
   taskId: "taskid",
   onError: (e) => console.log(`Error logging:`, e),
+});
+
+ReactNativeForegroundService.start({
+  id: 1244,
+  title: "Foreground Service",
+  message: "We are live World",
+  setOnlyAlertOnce: true,
+  color: "#000000",
+  progress: {
+    max: 100,
+    curr: 50,
+  },
 });
