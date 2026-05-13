@@ -11,7 +11,7 @@ export default function SettingScreen() {
 
   const [showError, setShowError] = useState(false);
 
-  const {dailyLimit} = getSelectedApps();
+  const {dailyLimit, setLimit} = getSelectedApps();
 
   return (
     <SafeAreaView style={mainStyle.container}>
@@ -20,7 +20,7 @@ export default function SettingScreen() {
 
       <TextInput 
         label="Set limit timer (in minute)"
-        placeholder="Type something"
+        placeholder=""
         mode='outlined'
         dense={true}
         style={{width: mainStyle._internal.windowWidth, backgroundColor: '#000000'}}
@@ -28,14 +28,17 @@ export default function SettingScreen() {
         outlineColor={mainStyle.borderColor}
         inputMode='numeric'
         textColor={mainStyle.text.color}
+        value={dailyLimit}
         onChangeText={(text) => {
           const inNumber = +text;//turn to number
           //handle error and display error message
           if(isNaN(inNumber)){
             setShowError(true);
+            return;
           }else if(showError){
             setShowError(false);
           }
+          setLimit(inNumber);
         }}
       />
       <HelperText type="error" visible={showError}>
