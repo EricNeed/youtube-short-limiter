@@ -29,7 +29,7 @@ download all dependancies in the package-lock.json:
 
 
 get the android folder:
-    npx expo prebuild 
+    npx expo prebuild --platform android 
     
 
 

@@ -17,7 +17,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.yourname.screentracker",
+      "package": "com.anonymous.shortlimiter",
       "permissions": [
         "PACKAGE_USAGE_STATS",
         "FOREGROUND_SERVICE",
@@ -34,7 +34,8 @@
       "expo-notifications",
       "expo-task-manager",
       "expo-router",
-      "expo-font"
+      "expo-font",
+      "./plugins/"
     ],
     "extra": {
       "eas": {
