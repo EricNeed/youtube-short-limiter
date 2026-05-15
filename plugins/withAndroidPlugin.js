@@ -1,5 +1,4 @@
-import { withAndroidManifest } from '@expo/config-plugins';
-;
+const { withAndroidManifest } = require('@expo/config-plugins');
 
  const withForegroundService = (config) => withAndroidManifest(config, (config) => {
     const mainApplication = config?.modResults?.manifest?.application?.[0];
@@ -9,6 +8,4 @@ import { withAndroidManifest } from '@expo/config-plugins';
     return config;
 })
 
-
-
-export default withForegroundService;
+module.exports = withForegroundService;

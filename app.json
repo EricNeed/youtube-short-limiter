@@ -35,7 +35,7 @@
       "expo-task-manager",
       "expo-router",
       "expo-font",
-      "./plugins/"
+      "./plugins/withAndroidPlugin.js"
     ],
     "extra": {
       "eas": {

@@ -40,5 +40,5 @@ framework versions:
 
 add next:
     npx expo install @expo/ui
-    expo install react-native-wheel-picker-expo
+    npx expo install react-native-wheel-picker-expo
     
