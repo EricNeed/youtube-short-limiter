@@ -7,11 +7,16 @@ export const SelectedAppProvider = ({children}) => {
     const [selectedApps, setAppList] = useState({});//load the selected app from from memory later
 
     let [dailyLimit, setLimit] = useState(Infinity);
+    let [] = useState({});
 
     //set apps is to give it a new list
-    return <SelectedAppContext.Provider value={{selectedApps, setAppList, dailyLimit, setLimit}}>
+    return <SelectedAppContext.Provider value={{selectedApps, setAppList, dailyLimit, setLimit, }}>
         {children}{/* all children of the components wrap around can use this provider */}
     </SelectedAppContext.Provider>
 }
 
 export const getSelectedApps = () => useContext(SelectedAppContext);
+
+export const addOneApp = () => {
+    
+}

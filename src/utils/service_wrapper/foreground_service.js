@@ -1,23 +1,39 @@
 import ReactNativeForegroundService from "@supersami/rn-foreground-service";
 
-ReactNativeForegroundService.register({
-  config: {
-    alert: true,
-    onServiceErrorCallBack: () => {
-      console.error("Foreground service error occurred");
+export function setupForegroundService(){
+  ReactNativeForegroundService.register({
+    config: {
+      alert: true,
+      onServiceErrorCallBack: () => {
+        console.error("Foreground service error occurred");
+      },
+    }
+  })
+
+  ReactNativeForegroundService.add_task(() => update(), {
+    delay: 1000,
+    onLoop: true,
+    taskId: "taskid",
+    onError: (e) => console.log(`Error logging:`, e),
+  });
+
+  ReactNativeForegroundService.start({
+    id: 1244,
+    title: "Foreground Service",
+    message: "We are live World",
+    setOnlyAlertOnce: true,
+    color: "#000000",
+    progress: {
+      max: 100,
+      curr: 50,
     },
-  }
-})
+    serviceType: "dataSync",
+  });
+}
 
 
-ReactNativeForegroundService.add_task(() => update(), {
-  delay: 1000,
-  onLoop: true,
-  taskId: "taskid",
-  onError: (e) => console.log(`Error logging:`, e),
-});
 
-
-export function placeHolderForegroundService(){
-    console.log("hi");
+//the actual function that foreground service runs
+function update(){
+  console.log("hi");
 }

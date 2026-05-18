@@ -11,6 +11,9 @@ extra dependancies(that blank template not include):
     npx expo install react-native-reanimated react-native-worklets
     npx expo install react-native-gifted-charts expo-linear-gradient react-native-svg
     npx expo install expo-symbols react-native-paper expo-haptics @react-native-async-storage/async-storage expo-font
+    npx expo install @expo/ui
+    npx expo install react-native-wheel-picker-expo
+    npm install immer
 
 web-version:
     npx expo install react-native-web
@@ -39,6 +42,6 @@ framework versions:
 
 
 add next:
-    npx expo install @expo/ui
-    npx expo install react-native-wheel-picker-expo
+    smt that allow me to kept compact data, for tracking spcific time
+
     
