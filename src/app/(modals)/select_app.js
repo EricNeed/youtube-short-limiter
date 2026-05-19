@@ -6,10 +6,8 @@ import { getAppListParsed } from "../../utils/service_wrapper/user_stats";
 import { getSelectedApps } from "../../utils/settings/global_var";
 
 export default function selectApp(){
-
-    const {selectedApps, setAppList} = getSelectedApps();
-    const selectedClone = structuredClone(selectedApps);
-    const appList = getAppListParsed(selectedApps);
+    const {trackedApps, refreshListener, updateUIApps} = getSelectedApps();
+    const appList = getAppListParsed(trackedApps);
 
     //flatlist call this function to draw each button
     const displayButton = ({item}) => {
@@ -20,13 +18,13 @@ export default function selectApp(){
                 onValueChange={()=>{
                     //adding or removing app from a tracking list
                     if(item.isTracked){
-                        delete selectedClone[item.packageName];
+                        delete trackedApps[item.packageName];
                     }else{
-                        const currentListItem = selectedClone[item.packageName] = {};
+                        const currentListItem = trackedApps[item.packageName] = {};
                         currentListItem.appName = item.appName;
                         currentListItem.category = item.category;
                     }
-                    setAppList(selectedClone);
+                    updateUIApps();
                 }}
             />
         </View>
