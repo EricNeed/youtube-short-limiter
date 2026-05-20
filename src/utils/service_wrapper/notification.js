@@ -2,7 +2,7 @@ import * as Notification from 'expo-notifications';
 
 Notification.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
   }),
@@ -23,16 +23,33 @@ export async function requestNotificationPermission(){
             return;
         }
     }
+    // console.log("permission is granted!");
 }
 
 //only use this if is on android
 async function setupChannels() {
+    console.log("setup channel is triggered");
     await Notification.setNotificationChannelAsync('test', {
         name: 'test',
-        importance: Notifications.AndroidImportance.MAX,
+        importance: Notification.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
         lightColor: '#FF231F7C',
     });
 
     //other channels should declear here
 }
+setupChannels();
+
+
+//test notification for yes reasons
+export const testNotification = async () => {
+    await Notification.scheduleNotificationAsync({
+      content: {
+        title: "hello skibidi",
+        body: 'This notification was triggered entirely within the app!',
+        data: { data: 'hi' },
+      },
+      trigger: null,
+      identifier: 'test'
+    });
+  };
