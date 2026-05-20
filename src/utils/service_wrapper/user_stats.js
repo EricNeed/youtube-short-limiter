@@ -1,4 +1,4 @@
-import { getInstalledApps, hasUsageStatsPermission } from "expo-android-usagestats";
+import { getInstalledApps, hasUsageStatsPermission, requestUsageStatsPermission } from "expo-android-usagestats";
 import { useEffect, useState } from "react";
 
 export async function getUserStatsTest(){
@@ -13,6 +13,15 @@ export async function getUserStatsTest(){
     // let apptime = await getUsageStats(time_now - 600000, time_now);
     // //for(const app of apptime){}
     // console.log(apptime);
+}
+
+
+
+//ask for perm
+export const requestUsagePerm = async () => {
+    if(!(await hasUsageStatsPermission())){
+        requestUsageStatsPermission();
+    }
 }
 
 
@@ -49,6 +58,7 @@ export const getListHook = () => {
 
     return dataIsReady;
 }
+
 
 
 /**

@@ -57,7 +57,6 @@ export const pushNotification = async (requestInput) => {
 };
 
 
-let a = "hi";
 
 //test notification for yes reasons
 export const testNotification = () => pushNotification({

@@ -3,7 +3,7 @@ import { mainStyle } from '../../components/scheme_style';
 import { symbolCache } from '../../components/symbol_cache';
 
 export default function TabLayout() {
-  console.log("tab layout used");
+  // console.log("tab layout used");
   return (
     <Tabs
       screenOptions={{
