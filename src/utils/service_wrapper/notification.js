@@ -8,6 +8,9 @@ Notification.setNotificationHandler({
   }),
 });
 
+
+
+//this should be triggered at the begining of the app to ask permission to send notification
 export async function requestNotificationPermission(){
     const { status: currentStatus } = await Notification.getPermissionsAsync();
     let permStatus = currentStatus;
@@ -26,14 +29,17 @@ export async function requestNotificationPermission(){
     // console.log("permission is granted!");
 }
 
+
+
 //only use this if is on android
 async function setupChannels() {
     console.log("setup channel is triggered");
-    await Notification.setNotificationChannelAsync('test', {
-        name: 'test',
+
+    await Notification.setNotificationChannelAsync('reminder', {
+        name: 'reminder',
         importance: Notification.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
+        lightColor: '#058028',
     });
 
     //other channels should declear here
@@ -41,15 +47,35 @@ async function setupChannels() {
 setupChannels();
 
 
+
+/**
+ * push a notification with any input
+ * @param {Notification.NotificationRequestInput} requestInput
+ */
+export const pushNotification = async (requestInput) => {
+  await Notification.scheduleNotificationAsync(requestInput);
+};
+
+
+let a = "hi";
+
 //test notification for yes reasons
-export const testNotification = async () => {
-    await Notification.scheduleNotificationAsync({
-      content: {
-        title: "hello skibidi",
-        body: 'This notification was triggered entirely within the app!',
-        data: { data: 'hi' },
-      },
-      trigger: null,
-      identifier: 'test'
-    });
-  };
+export const testNotification = () => pushNotification({
+  content: {
+    title: "hello skibidi",
+    body: 'This notification was triggered entirely within the app!',
+    data: { data: 'hi' },
+  },
+  trigger: null,
+  identifier: 'reminder'
+});
+
+export const sendTimerReminder = (appName, timeLeft, timeSpent=0) => pushNotification({
+  content: {
+    title: `${appName} for ${timeSpent}`,
+    body: `How about take a break? you have ${timeLeft} minute left before reach your daily limit`,
+    data: {appName, timeLeft, timeSpent},
+  },
+  trigger: null,
+  identifier: 'reminder'
+});
