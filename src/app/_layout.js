@@ -1,8 +1,9 @@
-import { router, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import { Platform } from 'react-native';
 import { requestNotificationPermission } from '../utils/service_wrapper/notification';
 import { requestUsagePerm } from '../utils/service_wrapper/user_stats';
 import { SelectedAppProvider } from '../utils/settings/global_var';
+import { popupModalWithParam } from './(modals)/no_perm';
 
 export default function RootLayout() {
   console.log("app interface working");
@@ -14,15 +15,12 @@ export default function RootLayout() {
 }
 
 
-
-// setupForegroundService();
-requestNotificationPermission();
-requestUsagePerm();
-
+//oly ask for service when its actually in android
 if(Platform.OS !== 'android'){
-  router.push("/(modals)/no_perm");
+  popupModalWithParam("Warning", "This program was not running on a android device, many service are unavilable on the current platform");
+}else{
+  // setupForegroundService();
+  requestNotificationPermission();
+  requestUsagePerm();
 }
 
-
-
-router.push("/(modals)/no_perm");
