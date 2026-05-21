@@ -26,18 +26,6 @@ export const requestUsagePerm = async () => {
 
 
 
-/** 
-get the app usage of selected app
-@param timeMin the interval in minute before now that i want to check the usage
-@param appList the list of package names of app in string
-@returns the list of minutes the same order of appList
-*/
-export async function getStats(timeMin){
-    return 
-}
-
-
-
 /**
  * basically, it will return some trash data when is called, while the async function run in the background, and when the async function got the actual data, it calls "setReadyState" and triggered a re-execution of the main function and return the actual app list
  * @returns false if not ready, the list of apps if data is fetched
@@ -64,7 +52,6 @@ export const getListHook = () => {
 /**
  * a function that return a list of all the apps, with a "isTracked" propertie being either true or false depend on if user configure to track this app
  * @param selectedApps
- * @returns 
  */
 export function getAppListParsed(selectedApps){
     const allApps = getListHook();

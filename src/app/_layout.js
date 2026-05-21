@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { Platform } from 'react-native';
 import { requestNotificationPermission } from '../utils/service_wrapper/notification';
+import { appUsageProcess } from '../utils/service_wrapper/usage_evaluator';
 import { requestUsagePerm } from '../utils/service_wrapper/user_stats';
 import { SelectedAppProvider } from '../utils/settings/global_var';
 import { popupModalWithParam } from './(modals)/no_perm';
@@ -24,3 +25,4 @@ if(Platform.OS !== 'android'){
   requestUsagePerm();
 }
 
+appUsageProcess();
