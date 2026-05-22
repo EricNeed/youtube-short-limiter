@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from "react";
 const SelectedAppContext = createContext();
 
 // a list of all the apps selected by user to track time
-const trackedApps = {};
+export const trackedApps = {};
 
 export const SelectedAppProvider = ({children}) => {
     //use for componets to subscribe to "trackedApps" so they will show to config
