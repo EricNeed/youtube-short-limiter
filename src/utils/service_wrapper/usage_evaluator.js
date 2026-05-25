@@ -1,25 +1,36 @@
 import { getUsageStats } from "expo-android-usagestats";
-import { trackedApps } from "../settings/global_var";
+import { limit, trackedApps } from "../settings/global_var";
+import { sendTimerReminder } from "./notification";
 
-let dateThingy = new Date();
 
+
+
+let dateThingy = new Date();//get the current time
 export const appUsageProcess = async () => {
-    console.log("\ngetting data");
-    //console.log(trackedApps);
-
+    //getting the times
     const timeSinceMidNight = (dateThingy.getHours()*60 + dateThingy.getMinutes())*60000;
-    console.log(timeSinceMidNight);
     const timeNow = Date.now();
+
+    //check if it has been more than a day to update the time
+    if(timeSinceMidNight > 86400000){
+        dateThingy = new Date();
+    }
 
     const appList = await getUsageStats(timeNow-timeSinceMidNight, timeNow);
 
-    let current_timer = 0;
+    let currentTimer = 0;
 
     for(let i = 0; i < appList.length; i++){
         const appUsage = appList[i]
         if(trackedApps[appUsage.packageName] === undefined){continue;}
-        current_timer += appUsage.totalTimeVisible/60000;
+        currentTimer += appUsage.totalTimeVisible/60000;
 
         console.log(appUsage.packageName + ": " + appUsage.totalTimeVisible/60000);
+    }
+
+    console.log(limit);
+
+    if(currentTimer > limit){
+        sendTimerReminder("current limitation", 0, currentTimer);
     }
 }

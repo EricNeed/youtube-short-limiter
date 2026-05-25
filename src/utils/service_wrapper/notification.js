@@ -71,7 +71,7 @@ export const testNotification = () => pushNotification({
 
 export const sendTimerReminder = (appName, timeLeft, timeSpent=0) => pushNotification({
   content: {
-    title: `${appName} for ${timeSpent}`,
+    title: `${timeSpent} for ${appName}`,
     body: `How about take a break? you have ${timeLeft} minute left before reach your daily limit`,
     data: {appName, timeLeft, timeSpent},
   },
