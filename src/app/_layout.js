@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import { Platform } from 'react-native';
+import { setupForegroundService } from "../utils/service_wrapper/foreground_service";
 import { requestNotificationPermission } from '../utils/service_wrapper/notification';
 import { appUsageProcess } from '../utils/service_wrapper/usage_evaluator';
 import { requestUsagePerm } from '../utils/service_wrapper/user_stats';
@@ -20,7 +21,7 @@ export default function RootLayout() {
 if(Platform.OS !== 'android'){
   popupModalWithParam("Warning", "This program was not running on a android device, many service are unavilable on the current platform");
 }else{
-  // setupForegroundService();
+  setupForegroundService();
   requestNotificationPermission();
   requestUsagePerm();
 }
