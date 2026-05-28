@@ -3,6 +3,18 @@ import { createContext, useContext, useState } from "react";
 const SelectedAppContext = createContext();
 
 // a list of all the apps selected by user to track time
+export const allTrackingGroups = [];
+/*allTrackingGroups = [
+    {
+        dailyLimit: Infinity,
+        usageTimer: 0,
+        appList: {
+            appOne: {...info}
+        }
+    },
+    other lists
+]*/
+
 export const trackedApps = {};
 
 export let limit = Infinity;
@@ -18,7 +30,7 @@ export const SelectedAppProvider = ({children}) => {
     let [dailyLimit, setLimit] = useState(Infinity);
     limit = dailyLimit;
 
-    return <SelectedAppContext.Provider value={{trackedApps, refreshListener, updateUIApps, dailyLimit, setLimit}}>
+    return <SelectedAppContext.Provider value={{trackedApps, refreshListener, updateUIApps, dailyLimit, setLimit, allTrackingGroups}}>
         {children}{/* all children of the components wrap around can use this provider */}
     </SelectedAppContext.Provider>
 }

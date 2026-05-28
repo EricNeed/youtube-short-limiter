@@ -27,7 +27,7 @@ export function setupForegroundService(){
       max: 100,
       curr: 50,
     },
-    serviceType: "dataSync",
+    ServiceType: "1",
   });
 }
 

@@ -14,6 +14,7 @@ export default function selectApp(){
         return <View style={[mainStyle.switch_container, {borderColor:mainStyle.borderColor, borderBottomWidth:mainStyle.borderWidth}]}>
             <Text style={mainStyle.text}>{item.appName}</Text>
             <Switch 
+                theme={{animation:{scale: 0}}}
                 value={item.isTracked} 
                 onValueChange={()=>{
                     //adding or removing app from a tracking list

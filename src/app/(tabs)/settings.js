@@ -47,7 +47,6 @@ export default function SettingScreen() {
       <HelperText type="error" visible={showError}>
         Input can only be number
       </HelperText>
-
     </SafeAreaView>
   );
 }
