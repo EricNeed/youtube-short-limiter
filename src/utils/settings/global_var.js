@@ -34,5 +34,15 @@ export const SelectedAppProvider = ({children}) => {
         {children}{/* all children of the components wrap around can use this provider */}
     </SelectedAppContext.Provider>
 }
-
 export const getSelectedApps = () => useContext(SelectedAppContext);
+
+const createTrackGroup = () => {
+    const index = allTrackingGroups.length;
+    allTrackingGroups[index] = {
+        dailyLimit: Infinity,
+        usageTimer: 0,
+        appList: {}
+    };
+    return index;
+}
+createTrackGroup();

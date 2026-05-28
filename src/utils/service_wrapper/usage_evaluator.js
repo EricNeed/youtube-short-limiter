@@ -1,5 +1,5 @@
 import { getUsageStats } from "expo-android-usagestats";
-import { limit, trackedApps } from "../settings/global_var";
+import { allTrackingGroups } from "../settings/global_var";
 import { sendTimerReminder } from "./notification";
 
 
@@ -20,9 +20,12 @@ export const appUsageProcess = async () => {
 
     let currentTimer = 0;
 
+
+    const currentTrackList = allTrackingGroups[0]["appList"];
+    const limit = allTrackingGroups[0]["dailyLimit"]
     for(let i = 0; i < appList.length; i++){
         const appUsage = appList[i]
-        if(trackedApps[appUsage.packageName] === undefined){continue;}
+        if(currentTrackList[appUsage.packageName] === undefined){continue;}
         currentTimer += appUsage.totalTimeVisible/60000;
 
         console.log(appUsage.packageName + ": " + appUsage.totalTimeVisible/60000);
