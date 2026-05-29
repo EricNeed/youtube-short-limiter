@@ -13,7 +13,8 @@ export default function SettingScreen() {
 
   const [showError, setShowError] = useState(false);
 
-  const {dailyLimit, setLimit} = getSelectedApps();
+  const {dailyLimit, setLimit, allTrackingGroups} = getSelectedApps();
+  const currentGroup = allTrackingGroups[0];
 
   return (
     <SafeAreaView style={mainStyle.container}>
@@ -31,7 +32,7 @@ export default function SettingScreen() {
         outlineColor={mainStyle.borderColor}
         inputMode='numeric'
         textColor={mainStyle.text.color}
-        value={dailyLimit}
+        value={currentGroup.dailyLimit}
         onChangeText={(text) => {
           const inNumber = +text;//turn to number
           //handle error and display error message
@@ -41,7 +42,7 @@ export default function SettingScreen() {
           }else if(showError){
             setShowError(false);
           }
-          setLimit(inNumber);
+          currentGroup.dailyLimitinNumber = currentGroup.dailyLimit;
         }}
       />
       <HelperText type="error" visible={showError}>
