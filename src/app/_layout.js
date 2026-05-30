@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import { setupForegroundService } from "../utils/service_wrapper/foreground_service";
 import { requestNotificationPermission } from '../utils/service_wrapper/notification';
 import { requestUsagePerm } from '../utils/service_wrapper/user_stats';
-import { SelectedAppProvider } from '../utils/settings/global_var';
+import { SelectedAppProvider } from '../utils/settings/tracked_apps';
 import { popupModalWithParam } from './(modals)/no_perm';
 
 export default function RootLayout() {

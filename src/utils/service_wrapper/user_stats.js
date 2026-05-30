@@ -1,5 +1,6 @@
 import { getInstalledApps, hasUsageStatsPermission, requestUsageStatsPermission } from "expo-android-usagestats";
 import { useEffect, useState } from "react";
+import { trackedApps } from "../settings/tracked_apps";
 
 
 
@@ -37,9 +38,10 @@ export const getListHook = () => {
 
 /**
  * a function that return a list of all the apps, with a "isTracked" propertie being either true or false depend on if user configure to track this app
+ * should only be used inside a conponent
  * @param selectedApps
  */
-export function getAppListParsed(selectedApps){
+export const getAppListParsed = (selectedApps) =>{
     const allApps = getListHook();
     
     //iterate through all the apps on the device and give it a "isTracked" lable
@@ -52,4 +54,22 @@ export function getAppListParsed(selectedApps){
         return [];
     }
     return allApps;
+}
+
+
+
+export const filterOtherGroup = (arrayOApps, groupID) =>{
+    useEffect(()=>{
+        //flipped because will remove item
+        for(let i = arrayOApps.length-1; i <= 0 ; i++){
+            const packageName = arrayOApps[i].packageName;
+            const inAppList = trackedApps[packageName]?.groupID;
+            //if its not in any other tracking group or is in this group, do nothing
+            if(inAppList === undefined || inAppList === groupID){
+                continue;
+            }
+            //remove it because its already in another group
+            arrayOApps.splice(i, 1);
+        }
+    }, []);
 }

@@ -1,6 +1,6 @@
 import { getUsageStats } from "expo-android-usagestats";
 import { sendTimerReminder } from "../utils/service_wrapper/notification";
-import { allTrackingGroups } from "../utils/settings/global_var";
+import { allTrackingGroups } from "../utils/settings/tracked_apps";
 
 
 

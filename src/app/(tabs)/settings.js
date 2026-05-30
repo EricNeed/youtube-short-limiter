@@ -5,7 +5,7 @@ import { HelperText, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { mainStyle } from '../../components/scheme_style';
 import { testNotification } from '../../utils/service_wrapper/notification';
-import { getSelectedApps } from '../../utils/settings/global_var';
+import { getSelectedApps } from '../../utils/settings/tracked_apps';
 
 export default function SettingScreen() {
 

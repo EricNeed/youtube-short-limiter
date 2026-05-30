@@ -3,12 +3,12 @@ import { FlatList, Text, View } from "react-native";
 import { Switch } from "react-native-paper";
 import { mainStyle } from "../../components/scheme_style";
 import { getAppListParsed } from "../../utils/service_wrapper/user_stats";
-import { getSelectedApps } from "../../utils/settings/global_var";
+import { getSelectedApps } from "../../utils/settings/tracked_apps";
 
 export default function selectApp(){
-    const {trackedApps, refreshListener, updateUIApps, allTrackingGroups} = getSelectedApps();
-    const currentAppList = allTrackingGroups[0]["appList"];
-    const appList = getAppListParsed(currentAppList);
+    const {groupID} = useLocalSearchParams();
+    const {trackedApps, refreshListener, updateUIApps, trackingGroups} = getSelectedApps();
+    const appList = getAppListParsed(trackedApps);
 
     //flatlist call this function to draw each button
     const displayButton = ({item}) => {
@@ -20,11 +20,12 @@ export default function selectApp(){
                 onValueChange={()=>{
                     //adding or removing app from a tracking list
                     if(item.isTracked){
-                        delete currentAppList[item.packageName];
+                        delete trackedApps[item.packageName];
                     }else{
-                        const currentListItem = currentAppList[item.packageName] = {};
+                        const currentListItem = trackedApps = {};
                         currentListItem.appName = item.appName;
                         currentListItem.category = item.category;
+                        currentListItem.groupID = groupID;
                     }
                     updateUIApps();
                 }}
@@ -45,6 +46,12 @@ export default function selectApp(){
             renderItem={displayButton}
         />
 
-    </View>
-    
+    </View>   
 }
+
+
+/**
+ * more covinent way to call the select app menu
+ * @param {*} groupID  
+ */
+export const selectAppForGroup = (groupID) => router.push(`./select_app?groupID=${groupID}`);
