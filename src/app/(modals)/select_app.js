@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { FlatList, Text, View } from "react-native";
 import { Switch } from "react-native-paper";
 import { mainStyle } from "../../components/scheme_style";
@@ -22,10 +22,11 @@ export default function selectApp(){
                     if(item.isTracked){
                         delete trackedApps[item.packageName];
                     }else{
-                        const currentListItem = trackedApps = {};
+                        const currentListItem = trackedApps[item.packageName] = {};
                         currentListItem.appName = item.appName;
                         currentListItem.category = item.category;
                         currentListItem.groupID = groupID;
+                        currentListItem.lastOpened = Date.now();
                     }
                     updateUIApps();
                 }}
@@ -48,10 +49,3 @@ export default function selectApp(){
 
     </View>   
 }
-
-
-/**
- * more covinent way to call the select app menu
- * @param {*} groupID  
- */
-export const selectAppForGroup = (groupID) => router.push(`./select_app?groupID=${groupID}`);

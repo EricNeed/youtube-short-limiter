@@ -35,6 +35,6 @@ export function setupForegroundService(){
 
 //the actual function that foreground service runs
 export function update(){
-  console.log("checking app usage");
+  // console.log("checking app usage");
   
 }

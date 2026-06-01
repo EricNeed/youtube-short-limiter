@@ -9,6 +9,7 @@ export const trackingGroups = [];
     {
         dailyLimit: Infinity,
         usageTimer: 0,
+        name: 0,
     },
     other group
 ]*/
@@ -17,6 +18,11 @@ export const trackingGroups = [];
 
 //all the apps tracked
 export const trackedApps = {};
+//trackedApps = {{appName: "", category: "", groupID: num, lastOpened: num}}
+
+
+//the timestamp of last time getting the usage
+export let lastTimeStamp = Date.now();
 
 
 
@@ -46,3 +52,10 @@ const createTrackGroup = () => {
     return index;
 }
 createTrackGroup();
+
+
+
+// get the usage of a app before it start getting tracked or before program launch
+const getUsageBeforeStart = (packageName) => {
+
+}
