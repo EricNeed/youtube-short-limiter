@@ -46,7 +46,15 @@ export const appUsageProcess = async () => {
 
     // check if any group need send notification
     for(const appGroup of trackingGroups){
-        
+        const currentX = (1 / appGroup.notifyAmount) * appGroup.notifyUsed + 1;
+
+        const intervalType = appGroup.notifyDeltaFnType;
+        if(intervalType === 0){//linear
+            
+        }else if(intervalType === 1){//exponential
+
+        }
+
     }
 
     // if(currentTimer > limit){

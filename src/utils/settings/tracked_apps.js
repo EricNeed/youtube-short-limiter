@@ -10,8 +10,12 @@ export const trackingGroups = [];
         dailyLimit: Infinity,
         usageTimer: 0,
         name: "",
-        notifyDeltaFnType: 0  //0:linear, 1:expenential
-        notifyDeltaFnValue: //slope in decimal or exponential decay value
+        notifyDeltaFnType: 0,  //0:linear, 1:expenential
+        notifyDeltaFnValue: 0, //slope in decimal or exponential decay value
+        notifyAmount: 0,
+        notifyUsed: 0,
+        lastNotify: 0,
+        intervalTotal: 0,
     },
     other group
 ]*/
