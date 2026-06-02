@@ -1,4 +1,5 @@
 import { getUsageEvents } from "expo-android-usagestats";
+import { sendTimerReminder } from "../utils/service_wrapper/notification";
 import { lastTimeStamp, trackedApps, trackingGroups } from "../utils/settings/tracked_apps";
 
 
@@ -9,12 +10,6 @@ export const appUsageProcess = async () => {
     //getting the times
     const timeNow = Date.now();
 
-    //check if it has been more than a day to update the time
-    // const timeSinceMidNight = (dateThingy.getHours()*60 + dateThingy.getMinutes())*60000;
-    // if(timeSinceMidNight > 86400000){
-    //     dateThingy = new Date();
-
-    // }
 
     const eventList = await getUsageEvents(lastTimeStamp, timeNow);
 
@@ -35,6 +30,7 @@ export const appUsageProcess = async () => {
         }
     }
 
+
     //grab any still running apps and count their time in
     const trackedProperties = trackedApps.values();
     for(const appProp of trackedProperties){
@@ -44,21 +40,39 @@ export const appUsageProcess = async () => {
         trackingGroups[appProp.groupID].usageTimer += timePassed;
     }
 
+
     // check if any group need send notification
     for(const appGroup of trackingGroups){
-        const currentX = (1 / appGroup.notifyAmount) * appGroup.notifyUsed + 1;
+        if(appGroup.usageTimer < appGroup.nextNotify){continue;}
 
-        const intervalType = appGroup.notifyDeltaFnType;
-        if(intervalType === 0){//linear
-            
-        }else if(intervalType === 1){//exponential
+        //send message
+        sendTimerReminder("current limitation", 0, currentTimer);
 
+        //set timer for next interval
+        let nextIntervalNormalized;
+        switch(appGroup.notifyDeltaFnType){
+            case 0://linear
+                nextIntervalNormalized = 1 + appGroup.notifyDeltaFnValue * (appGroup.notifyUsed+=1);
+                break;
+            case 1://exponential
+                nextIntervalNormalized = appGroup.notifyDeltaFnValue ** (appGroup.notifyUsed+=1);
+                break;
+            case 2://constant
+                break;
+            default: continue;
         }
+        appGroup.nextNotify += nextIntervalNormalized * appGroup.normalToLimit;
+        
 
     }
 
-    // if(currentTimer > limit){
-    //     sendTimerReminder("current limitation", 0, currentTimer);
-    // }
+
     lastTimeStamp = Date.now();
 }
+
+    //check if it has been more than a day to update the time
+    // const timeSinceMidNight = (dateThingy.getHours()*60 + dateThingy.getMinutes())*60000;
+    // if(timeSinceMidNight > 86400000){
+    //     dateThingy = new Date();
+
+    // }

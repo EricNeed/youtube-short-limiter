@@ -12,10 +12,11 @@ export const trackingGroups = [];
         name: "",
         notifyDeltaFnType: 0,  //0:linear, 1:expenential
         notifyDeltaFnValue: 0, //slope in decimal or exponential decay value
-        notifyAmount: 0,
-        notifyUsed: 0,
-        lastNotify: 0,
-        intervalTotal: 0,
+
+        nextNotify: 0, //the time you should notify the user
+        notifyUsed: 0, //the message already sent
+        intervalTotal: 0, // all the interval add together
+        normalToLimit: 0, //from 0-1 to 0-dailyLimit
     },
     other group
 ]*/
