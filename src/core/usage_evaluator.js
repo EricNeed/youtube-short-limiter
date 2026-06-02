@@ -1,4 +1,4 @@
-import { getAggregatedUsageStats, getUsageEvents } from "expo-android-usagestats";
+import { getUsageEvents } from "expo-android-usagestats";
 import { lastTimeStamp, trackedApps, trackingGroups } from "../utils/settings/tracked_apps";
 
 
@@ -17,28 +17,37 @@ export const appUsageProcess = async () => {
     // }
 
     const eventList = await getUsageEvents(lastTimeStamp, timeNow);
-    getAggregatedUsageStats()
-    console.log(evenList);
-
-    //save some cpu if user are not even using their phone
-    let eventProcessed = false;
 
     for(let i = 0; i < evenList.length; i++){
         const event = eventList[i];
         const currentApp = trackedApps[event.packageName];
         if(currentApp === undefined){continue;}
-        else if(event.eventType === 1){//user open app
-            currentApp.lastOpened = event.timeStamp;
-        }else if(event.eventType === 2){//user closed app
-            const timeSpent = event.timeStamp - currentApp.lastOpened;
-            trackingGroups.usageTimer += timeSpent;
 
-            //todo: if notification requirement met then send notification
+        else if(event.eventType === 1){//user open app
+            currentApp.currentStatus = 1;
+            currentApp.lastProcessed = event.timeStamp;
+        }else if(event.eventType === 2){//user closed app
+            currentApp.currentStatus = 0;
+            const timePassed = event.timeStamp - currentApp.lastProcessed;
+            trackingGroups[currentApp.groupID].usageTimer += timePassed;
+        }else{
+            continue;
         }
-        eventProcessed = true;
     }
 
+    //grab any still running apps and count their time in
+    const trackedProperties = trackedApps.values();
+    for(const appProp of trackedProperties){
+        if(appProp.currentStatus === 0){continue;}
 
+        const timePassed = lastTimeStamp - appProp.lastProcessed;
+        trackingGroups[appProp.groupID].usageTimer += timePassed;
+    }
+
+    // check if any group need send notification
+    for(const appGroup of trackingGroups){
+        
+    }
 
     // if(currentTimer > limit){
     //     sendTimerReminder("current limitation", 0, currentTimer);

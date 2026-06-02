@@ -9,7 +9,9 @@ export const trackingGroups = [];
     {
         dailyLimit: Infinity,
         usageTimer: 0,
-        name: 0,
+        name: "",
+        notifyDeltaFnType: 0  //0:linear, 1:expenential
+        notifyDeltaFnValue: //slope in decimal or exponential decay value
     },
     other group
 ]*/
@@ -18,7 +20,7 @@ export const trackingGroups = [];
 
 //all the apps tracked
 export const trackedApps = {};
-//trackedApps = {{appName: "", category: "", groupID: num, lastOpened: num}}
+//trackedApps = {{appName: "", category: "", groupID: num, lastProcessed: num, currentStatus: num}}
 
 
 //the timestamp of last time getting the usage
@@ -48,6 +50,7 @@ const createTrackGroup = () => {
     trackingGroups[index] = {
         dailyLimit: Infinity,
         usageTimer: 0,
+        name: "",
     };
     return index;
 }

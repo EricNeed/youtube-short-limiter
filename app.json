@@ -22,7 +22,7 @@
       ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./storge/assets/thumbnail_low_res.png"
     },
     "plugins": [
       "expo-dev-client",
