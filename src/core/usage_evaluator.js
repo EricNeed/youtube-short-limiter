@@ -50,17 +50,7 @@ export const appUsageProcess = async () => {
 
         //set timer for next interval
         let nextIntervalNormalized;
-        switch(appGroup.notifyDeltaFnType){
-            case 0://linear
-                nextIntervalNormalized = 1 + appGroup.notifyDeltaFnValue * (appGroup.notifyUsed+=1);
-                break;
-            case 1://exponential
-                nextIntervalNormalized = appGroup.notifyDeltaFnValue ** (appGroup.notifyUsed+=1);
-                break;
-            case 2://constant
-                break;
-            default: continue;
-        }
+        
         appGroup.nextNotify += nextIntervalNormalized * appGroup.normalToLimit;
         
 
@@ -69,6 +59,7 @@ export const appUsageProcess = async () => {
 
     lastTimeStamp = Date.now();
 }
+
 
     //check if it has been more than a day to update the time
     // const timeSinceMidNight = (dateThingy.getHours()*60 + dateThingy.getMinutes())*60000;

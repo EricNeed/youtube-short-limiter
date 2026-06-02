@@ -15,8 +15,9 @@ export const trackingGroups = [];
 
         nextNotify: 0, //the time you should notify the user
         notifyUsed: 0, //the message already sent
-        intervalTotal: 0, // all the interval add together
+        intervalSum: 0, // all the interval add together
         normalToLimit: 0, //from 0-1 to 0-dailyLimit
+        intervalAmount: 0, //amount of message in total
     },
     other group
 ]*/
@@ -66,4 +67,16 @@ createTrackGroup();
 // get the usage of a app before it start getting tracked or before program launch
 const getUsageBeforeStart = (packageName) => {
 
+}
+
+
+const configureGroup = (groupID, intervalAmount, slope, fnType) => {
+    const currentApp = trackingGroups[groupID]
+    currentApp.intervalAmount = intervalAmount;
+    currentApp.notifyDeltaFnType = fnType;
+    currentApp.notifyDeltaFnValue = slope;
+
+
+    for(let x = 0; x <= 1; x+=1/intervalAmount){
+    }
 }
