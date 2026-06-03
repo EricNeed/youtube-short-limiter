@@ -49,9 +49,9 @@ export const appUsageProcess = async () => {
         sendTimerReminder("current limitation", 0, currentTimer);
 
         //set timer for next interval
-        let nextIntervalNormalized;
-        
-        appGroup.nextNotify += nextIntervalNormalized * appGroup.normalToLimit;
+
+        const nextIntervalNormalized = normalTimerMath(appGroup.notifyFnType, appGroup.notifyFnCoeff, (appGroup.notifyUsed+=1) / appGroup.intervalAmount);
+        appGroup.nextNotify += nextIntervalNormalized * appGroup.normalToLimit * 60000; // 60000 is to convert min to millis
         
 
     }

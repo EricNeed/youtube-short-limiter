@@ -1,32 +1,36 @@
 import { createContext, useContext, useState } from "react";
+import { normalTimerMath } from "../shared_utils";
 //later for loading config: check all app in trackedApps exsist
 
 
 
 // a list of all the apps selected by user to track time
 export const trackingGroups = [];
-/*trackingGroups = [
-    {
+
+// create a new group, and return the index in trackingGroups
+const createTrackGroup = () => {
+    const index = trackingGroups.length;
+    trackingGroups[index] = {
         dailyLimit: Infinity,
         usageTimer: 0,
         name: "",
-        notifyDeltaFnType: 0,  //0:linear, 1:expenential
-        notifyDeltaFnValue: 0, //slope in decimal or exponential decay value
+        notifyFnType: 0,  //0:linear, 1:expenential
+        notifyFnCoeff: 0, //slope in decimal or exponential decay value
 
-        nextNotify: 0, //the time you should notify the user
+        nextNotify: Infinity, //the time you should notify the user
         notifyUsed: 0, //the message already sent
-        intervalSum: 0, // all the interval add together
         normalToLimit: 0, //from 0-1 to 0-dailyLimit
         intervalAmount: 0, //amount of message in total
-    },
-    other group
-]*/
-
+    };
+    return index;
+}
+createTrackGroup();
 
 
 //all the apps tracked
 export const trackedApps = {};
 //trackedApps = {{appName: "", category: "", groupID: num, lastProcessed: num, currentStatus: num}}
+
 
 
 //the timestamp of last time getting the usage
@@ -50,33 +54,39 @@ export const getSelectedApps = () => useContext(SelectedAppContext);
 
 
 
-// create a new group, and return the index in trackingGroups
-const createTrackGroup = () => {
-    const index = trackingGroups.length;
-    trackingGroups[index] = {
-        dailyLimit: Infinity,
-        usageTimer: 0,
-        name: "",
-    };
-    return index;
-}
-createTrackGroup();
-
-
-
 // get the usage of a app before it start getting tracked or before program launch
 const getUsageBeforeStart = (packageName) => {
 
 }
 
 
-const configureGroup = (groupID, intervalAmount, slope, fnType) => {
+
+/**
+ * configure a group's notification interval using the users config input
+ * @param {number} groupID 
+ * @param {number} intervalAmount 
+ * @param {number} coefficient cannot be negative if fnType is 1
+ * @param {number} fnType 0: linear, 1: exponential, 2: constant(user configured interval), 3: constant(user configure amount of interval)
+ * @param {number} limitTime the time limit of a group that user set
+ */
+const configureGroup = (groupID, intervalAmount, coefficient, fnType, limitTime) => {
+    // console.log("configuring");
     const currentApp = trackingGroups[groupID]
     currentApp.intervalAmount = intervalAmount;
-    currentApp.notifyDeltaFnType = fnType;
-    currentApp.notifyDeltaFnValue = slope;
+    currentApp.notifyFnType = fnType;
+    currentApp.dailyLimit = limitTime;
 
-
-    for(let x = 0; x <= 1; x+=1/intervalAmount){
+    if(3){
+        currentApp.notifyFnCoeff = limitTime/intervalAmount;
+    }else{
+        //basically, total up how big a slice of cake each interval want, and map that sum to the configured limit to slice the limit for each interval
+        //(after 2 days, only god shall understand this code)
+        currentApp.notifyFnCoeff = coefficient;
+        let total = 0;
+        for(let x = 0; x <= 1; x+=1/intervalAmount){
+            total += normalTimerMath(fnType, coefficient, x);
+            // console.log(total);
+        }
+        currentApp.normalToLimit = limitTime/total;
     }
 }
