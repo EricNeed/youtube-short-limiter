@@ -1,4 +1,5 @@
 import ReactNativeForegroundService from "@supersami/rn-foreground-service";
+import { appUsageProcess } from "../../core/usage_evaluator";
 
 export function setupForegroundService(){
   ReactNativeForegroundService.register({
@@ -11,7 +12,7 @@ export function setupForegroundService(){
   })
 
   ReactNativeForegroundService.add_task(() => update(), {
-    delay: 1000,
+    delay: 10000,
     onLoop: true,
     taskId: "taskid",
     onError: (e) => console.log(`Error logging:`, e),
@@ -35,6 +36,6 @@ export function setupForegroundService(){
 
 //the actual function that foreground service runs
 export function update(){
-  // console.log("checking app usage");
-  
+  console.log("getting app usage");
+  appUsageProcess();
 }

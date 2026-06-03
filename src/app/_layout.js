@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { Platform } from 'react-native';
 import { setupForegroundService } from "../utils/service_wrapper/foreground_service";
 import { requestNotificationPermission } from '../utils/service_wrapper/notification';
@@ -12,6 +12,7 @@ export default function RootLayout() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(modals)/select_app"/>
       <Stack.Screen name="(modals)/no_perm" options={{presentation: 'transparentModal', animation: 'fade'}}/>
+      <Stack.Screen name="(modals)/configure_limit_group" options={{presentation: 'transparentModal', animation: 'slide_from_bottom', headerShown: false}}/> 
     </Stack></SelectedAppProvider>
 }
 
@@ -24,3 +25,5 @@ if(Platform.OS !== 'android'){
   requestNotificationPermission();
   requestUsagePerm();
 }
+
+router.push('./(modals)/configure_limit_group?selectedGroup=0'); 

@@ -1,10 +1,8 @@
 import { getUsageEvents } from "expo-android-usagestats";
 import { sendTimerReminder } from "../utils/service_wrapper/notification";
-import { lastTimeStamp, trackedApps, trackingGroups } from "../utils/settings/tracked_apps";
+import { lastTimeStamp, trackedApps, trackingGroups, updateTimeStamp } from "../utils/settings/tracked_apps";
 
 
-
-let dateThingy = new Date();//get the current time
 
 export const appUsageProcess = async () => {
     //getting the times
@@ -13,7 +11,7 @@ export const appUsageProcess = async () => {
 
     const eventList = await getUsageEvents(lastTimeStamp, timeNow);
 
-    for(let i = 0; i < evenList.length; i++){
+    for(let i = 0; i < eventList.length; i++){
         const event = eventList[i];
         const currentApp = trackedApps[event.packageName];
         if(currentApp === undefined){continue;}
@@ -32,8 +30,7 @@ export const appUsageProcess = async () => {
 
 
     //grab any still running apps and count their time in
-    const trackedProperties = trackedApps.values();
-    for(const appProp of trackedProperties){
+    for(const appProp of Object.values(trackedApps)){
         if(appProp.currentStatus === 0){continue;}
 
         const timePassed = lastTimeStamp - appProp.lastProcessed;
@@ -57,10 +54,10 @@ export const appUsageProcess = async () => {
     }
 
 
-    lastTimeStamp = Date.now();
+    updateTimeStamp();
 }
 
-
+    // let dateThingy = new Date();//get the current time
     //check if it has been more than a day to update the time
     // const timeSinceMidNight = (dateThingy.getHours()*60 + dateThingy.getMinutes())*60000;
     // if(timeSinceMidNight > 86400000){

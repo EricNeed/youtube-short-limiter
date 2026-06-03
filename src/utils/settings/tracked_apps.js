@@ -35,6 +35,9 @@ export const trackedApps = {};
 
 //the timestamp of last time getting the usage
 export let lastTimeStamp = Date.now();
+export const updateTimeStamp = () => {
+    lastTimeStamp = Date.now();
+}
 
 
 
