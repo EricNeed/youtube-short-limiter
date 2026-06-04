@@ -13,7 +13,7 @@ const createTrackGroup = () => {
     trackingGroups[index] = {
         dailyLimit: Infinity,
         usageTimer: 0,
-        name: "",
+        name: "un-named group",
         notifyFnType: 0,  //0:linear, 1:expenential
         notifyFnCoeff: 0, //slope in decimal or exponential decay value
 

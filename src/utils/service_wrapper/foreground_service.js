@@ -12,14 +12,14 @@ export function setupForegroundService(){
   })
 
   ReactNativeForegroundService.add_task(() => update(), {
-    delay: 10000,
+    delay: 300000,
     onLoop: true,
-    taskId: "taskid",
+    taskId: "appTracker",
     onError: (e) => console.log(`Error logging:`, e),
   });
 
   ReactNativeForegroundService.start({
-    id: 1244,
+    id: "appTracker",
     title: "Foreground Service",
     message: "We are live World",
     setOnlyAlertOnce: true,
