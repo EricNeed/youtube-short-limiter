@@ -85,11 +85,16 @@ const configureGroup = (groupID, intervalAmount, coefficient, fnType, limitTime)
         //basically, total up how big a slice of cake each interval want, and map that sum to the configured limit to slice the limit for each interval
         //(after 2 days, only god shall understand this code)
         currentApp.notifyFnCoeff = coefficient;
-        let total = 0;
-        for(let x = 0; x <= 1; x+=1/intervalAmount){
-            total += normalTimerMath(fnType, coefficient, x);
-            // console.log(total);
-        }
-        currentApp.normalToLimit = limitTime/total;
+        
+        currentApp.normalToLimit = equasionPreview(intervalAmount, fnType, coefficient, limitTime);
     }
+}
+
+export const equasionPreview = (intervalAmount, fnType, coefficient, limitTime) => {
+    let total = 0;
+    for(let x = 0; x <= 1; x+=1/intervalAmount){
+        total += normalTimerMath(fnType, coefficient, x);
+        // console.log(total);
+    }
+    return limitTime/total
 }

@@ -7,7 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { mainStyle } from "../../components/scheme_style";
 import { NumInput } from "../../components/single_componet";
 import { symbolCache } from "../../components/symbol_cache";
-import { getSelectedApps } from "../../utils/settings/tracked_apps";
+import { equasionPreview, getSelectedApps } from "../../utils/settings/tracked_apps";
 import { normalTimerMath } from "../../utils/shared_utils";
 
 export default function configureGroupPage(){
@@ -69,14 +69,14 @@ export default function configureGroupPage(){
                 lable = "Set limit: "
                 placeholder = "in minute"
                 defaultValue = {currentGroup.dailyLimit === Infinity? undefined:`${currentGroup.dailyLimit}`} 
-                onNumberChange={()=>{}}
+                onNumberChange={(value)=>{currentGroup.dailyLimit = value}}
             />
             <Text style={{color: '#ffffff'}}>*Interval: total amount of message send to remind you</Text>
             <NumInput
                 lable = "Set interval: "
                 placeholder = "in minute"
                 defaultValue = {currentGroup.intervalAmount === 0? undefined:`${currentGroup.dailyLimit}`} 
-                onNumberChange={()=>{}}
+                onNumberChange={(value)=>{currentGroup.dailyLimit = value}}
             />
 
             <Text style={{color: '#ffffff'}}>*{sliderDiscription}</Text>
@@ -91,19 +91,21 @@ export default function configureGroupPage(){
             <Text style={{color: '#ffffff'}}>Current: {Math.round(sliderValue*1000)/1000}</Text>
 
             <Text style={{color: '#ffffff'}}>Interval Trend:</Text>
-            <Text style={{color: '#ffffff'}}>{getIntervalPreview(currentGroup.intervalAmount, fnType, sliderValue)}</Text>
+            <Text style={{color: '#ffffff'}}>{getIntervalPreview(currentGroup.intervalAmount, fnType, sliderValue, currentGroup.dailyLimit)}</Text>
         </View>
     </SafeAreaView>
 }
 
 //<IconButton icon={() => (<SymbolView name={{android: 'settings', web: 'settings'}} fallback={<Text>?⚙️?</Text>}/>)} mode='contained-tonal'/>
 
-const getIntervalPreview = (intervalAmount, type, coefficient) => {
+const getIntervalPreview = (intervalAmount, type, coefficient, limitTime) => {
+    const scaleFactor = equasionPreview(intervalAmount, type, coefficient, limitTime);
     let preview = "";
     const intervalNormal = 1/intervalAmount;
     if (intervalAmount < 7){
-        for(let x = 1; x <= 1; x+=intervalNormal){
+        for(let x = 0; x <= 1; x+=intervalNormal){
             preview += normalTimerMath(type, coefficient, x) + ", ";
+            console.log("once");
         }
     }else{
         for(let x = 1; x <= 3; x++){
