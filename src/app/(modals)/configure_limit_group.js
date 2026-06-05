@@ -10,6 +10,8 @@ import { symbolCache } from "../../components/symbol_cache";
 import { equasionPreview, getSelectedApps } from "../../utils/settings/tracked_apps";
 import { normalTimerMath } from "../../utils/shared_utils";
 
+const 
+
 export default function ConfigureGroupPage(){
     const {groupID} = useLocalSearchParams();
     
@@ -24,50 +26,53 @@ export default function ConfigureGroupPage(){
         dailyLimit: Infinity,
         notifyFnCoeff: 0,
         currentState: false,
+        sliderValue: 0,
     });
+
+
+    const setSetting = (key, newValue) => {
+        if("segButonValue"){
+            settings.fnType = settings.segButonValue;
+            
+        }
+
+        changeSettings({
+            ...settings,
+            [key]: newValue,
+        });
+    }
 
 
     let sliderDiscription = "";
     let sliderStartNum = 0;
     let sliderEndNum = 0;
     let intervalPreview = "";
-    const setSetting = (key, newValue) => {
-        if(key === ""){
-            switch(settings.segButonValue){
-            case 0:
-                sliderDiscription = "the slope of interval equasion"
-                sliderStartNum = 0.001;
-                sliderEndNum = 1;
-            case 1:
-                sliderDiscription = "the base of interval equasion"
-                sliderStartNum = -1;
-                sliderEndNum = 0;
-            case 2:
-                sliderDiscription = "the base of interval equasion"
-                sliderStartNum = -1;
-                sliderEndNum = 0; 
-            }
-        }
+    switch(settings.fnType){
+    case 0:
+        sliderDiscription = "the slope of interval equasion"
+        sliderStartNum = 0.001;
+        sliderEndNum = 1;
+    case 1:
+        sliderDiscription = "the base of interval equasion"
+        sliderStartNum = -1;
+        sliderEndNum = 0;
+    case 2:
+        sliderDiscription = "the interval to send reminder"
+        sliderStartNum = 1;
+        sliderEndNum = 100; 
+    case 3:
 
-        changeSettings({
-            ...settings,
-            [key]: newValue
-        });
+    default:
+
     }
+
+
 
     // const theme = useTheme(); //later
 
     // console.log("fn type: " + settings.fnType);
     
-
-    if(settings.fnType === 0){
-        
-    }else if(settings.fnType === 1){
-        
-    }else if(settings.fnType === 2){
-
-    }
-    const [sliderValue, setSliderValue] = useState((sliderEndNum-sliderStartNum)/2); 
+    const [, setSliderValue] = useState((sliderEndNum-sliderStartNum)/2); 
 
 
     return <SafeAreaView style={{flex:1}}>
@@ -79,7 +84,7 @@ export default function ConfigureGroupPage(){
             </View>
             <SegmentedButtons
                 value={settings.segButonValue}
-                onValueChange={(value) => {setSetting("segButonValue", value)}}
+                onValueChange={(value) => setSetting("segButonValue", value)}
                 buttons={[
                 {value:0, label:'Linear'},
                 {value:1, label:'Exponential'},
