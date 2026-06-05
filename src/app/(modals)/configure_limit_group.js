@@ -10,37 +10,61 @@ import { symbolCache } from "../../components/symbol_cache";
 import { equasionPreview, getSelectedApps } from "../../utils/settings/tracked_apps";
 import { normalTimerMath } from "../../utils/shared_utils";
 
-export default function configureGroupPage(){
+export default function ConfigureGroupPage(){
     const {groupID} = useLocalSearchParams();
     
-    const {refreshListener, updateUIApps, trackingGroups, trackedApps} = getSelectedApps();
-
-    // const theme = useTheme(); //later
-
+    const {updateUIApps, trackingGroups, trackedApps} = getSelectedApps();
     const currentGroup = trackingGroups[groupID];
 
-    const [intervalFnType, setFnType] = useState(0);
-    const [value, setValue] = useState(0);
-
+    const [settings, changeSettings] = useState({
+        segButonValue: 2,
+        constInterval: true,
+        fnType: 2,
+        intervalAmount: 0,
+        dailyLimit: Infinity,
+        notifyFnCoeff: 0,
+        currentState: false,
+    });
 
 
     let sliderDiscription = "";
     let sliderStartNum = 0;
     let sliderEndNum = 0;
     let intervalPreview = "";
-    let fnType = 0;
-    if(intervalFnType === 0){
-        sliderDiscription = "the slope of interval equasion"
-        sliderStartNum = 0.001;
-        sliderEndNum = 1;
-        fnType = 0;
-        intervalPreview
-    }else if(intervalFnType === 1){
-        sliderDiscription = "the base of interval equasion"
-        sliderStartNum = -1;
-        sliderEndNum = 0;
-        fnType = 1;
-    }else if(intervalFnType === 2){
+    const setSetting = (key, newValue) => {
+        if(key === ""){
+            switch(settings.segButonValue){
+            case 0:
+                sliderDiscription = "the slope of interval equasion"
+                sliderStartNum = 0.001;
+                sliderEndNum = 1;
+            case 1:
+                sliderDiscription = "the base of interval equasion"
+                sliderStartNum = -1;
+                sliderEndNum = 0;
+            case 2:
+                sliderDiscription = "the base of interval equasion"
+                sliderStartNum = -1;
+                sliderEndNum = 0; 
+            }
+        }
+
+        changeSettings({
+            ...settings,
+            [key]: newValue
+        });
+    }
+
+    // const theme = useTheme(); //later
+
+    // console.log("fn type: " + settings.fnType);
+    
+
+    if(settings.fnType === 0){
+        
+    }else if(settings.fnType === 1){
+        
+    }else if(settings.fnType === 2){
 
     }
     const [sliderValue, setSliderValue] = useState((sliderEndNum-sliderStartNum)/2); 
@@ -54,8 +78,8 @@ export default function configureGroupPage(){
                 <IconButton icon={({color}) => (symbolCache.close(color))} mode='contained' onPress={() => router.back()}/>
             </View>
             <SegmentedButtons
-                value={intervalFnType}
-                onValueChange={setFnType}
+                value={settings.segButonValue}
+                onValueChange={(value) => {setSetting("segButonValue", value)}}
                 buttons={[
                 {value:0, label:'Linear'},
                 {value:1, label:'Exponential'},
@@ -68,8 +92,8 @@ export default function configureGroupPage(){
             <NumInput
                 lable = "Set limit: "
                 placeholder = "in minute"
-                defaultValue = {currentGroup.dailyLimit === Infinity? undefined:`${currentGroup.dailyLimit}`} 
-                onNumberChange={(value)=>{currentGroup.dailyLimit = value}}
+                defaultValue = {settings.dailyLimit === Infinity? undefined:`${settings.dailyLimit}`} 
+                onNumberChange={(value)=>{settings.dailyLimit = value}}
             />
             <Text style={{color: '#ffffff'}}>*Interval: total amount of message send to remind you</Text>
             <NumInput
@@ -91,7 +115,7 @@ export default function configureGroupPage(){
             <Text style={{color: '#ffffff'}}>Current: {Math.round(sliderValue*1000)/1000}</Text>
 
             <Text style={{color: '#ffffff'}}>Interval Trend:</Text>
-            <Text style={{color: '#ffffff'}}>{getIntervalPreview(currentGroup.intervalAmount, fnType, sliderValue, currentGroup.dailyLimit)}</Text>
+            {/* <Text style={{color: '#ffffff'}}>{getIntervalPreview(currentGroup.intervalAmount, fnType, sliderValue, currentGroup.dailyLimit)}</Text> */}
         </View>
     </SafeAreaView>
 }
@@ -103,8 +127,8 @@ const getIntervalPreview = (intervalAmount, type, coefficient, limitTime) => {
     let preview = "";
     const intervalNormal = 1/intervalAmount;
     if (intervalAmount < 7){
-        for(let x = 0; x <= 1; x+=intervalNormal){
-            preview += normalTimerMath(type, coefficient, x) + ", ";
+        for(let x = 1; x < intervalAmount; x++){
+            preview += normalTimerMath(type, coefficient, x*intervalNormal) + ", ";
             console.log("once");
         }
     }else{

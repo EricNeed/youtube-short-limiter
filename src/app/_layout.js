@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import { Platform } from 'react-native';
 import { setupForegroundService } from "../utils/service_wrapper/foreground_service";
 import { requestNotificationPermission } from '../utils/service_wrapper/notification';
@@ -25,5 +25,3 @@ if(Platform.OS !== 'android'){
   requestNotificationPermission();
   requestUsagePerm();
 }
-
-router.push('./(modals)/configure_limit_group?groupID=0');
