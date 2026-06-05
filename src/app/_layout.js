@@ -26,4 +26,4 @@ if(Platform.OS !== 'android'){
   requestUsagePerm();
 }
 
-router.push('./(modals)/configure_limit_group?groupID=0');
+router.push('./(modals)/configure_limit_group?groupID=0');  

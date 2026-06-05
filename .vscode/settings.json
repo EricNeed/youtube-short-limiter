@@ -5,6 +5,8 @@
     "source.sortMembers": "explicit"
   },
 
+  "workbench.editor.enablePreview": false,
+
   "files.exclude": {
     "*.md": true,
     "LICENSE": true,

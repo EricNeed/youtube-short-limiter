@@ -1,26 +1,118 @@
-import { useLocalSearchParams } from "expo-router";
+import { Host, Slider } from "@expo/ui/jetpack-compose";
+import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import { Text, View } from "react-native";
-import { Button, IconButton } from 'react-native-paper';
+import { Divider, IconButton, SegmentedButtons } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mainStyle } from "../../components/scheme_style";
+import { NumInput } from "../../components/single_componet";
 import { symbolCache } from "../../components/symbol_cache";
 import { getSelectedApps } from "../../utils/settings/tracked_apps";
+import { normalTimerMath } from "../../utils/shared_utils";
 
 export default function configureGroupPage(){
     const {groupID} = useLocalSearchParams();
     
     const {refreshListener, updateUIApps, trackingGroups, trackedApps} = getSelectedApps();
 
+    // const theme = useTheme(); //later
+
+    const currentGroup = trackingGroups[groupID];
+
+    const [intervalFnType, setFnType] = useState(0);
+    const [value, setValue] = useState(0);
+
+
+
+    let sliderDiscription = "";
+    let sliderStartNum = 0;
+    let sliderEndNum = 0;
+    let intervalPreview = "";
+    let fnType = 0;
+    if(intervalFnType === 0){
+        sliderDiscription = "the slope of interval equasion"
+        sliderStartNum = 0.001;
+        sliderEndNum = 1;
+        fnType = 0;
+        intervalPreview
+    }else if(intervalFnType === 1){
+        sliderDiscription = "the base of interval equasion"
+        sliderStartNum = -1;
+        sliderEndNum = 0;
+        fnType = 1;
+    }else if(intervalFnType === 2){
+
+    }
+    const [sliderValue, setSliderValue] = useState((sliderEndNum-sliderStartNum)/2); 
+
+
     return <SafeAreaView style={{flex:1}}>
         <View style={{flex:1}}></View>
         <View style={{flex:2, backgroundColor:'#333333aa', padding: 5, borderColor: '#555555', borderTopWidth:4, borderRightWidth:4, borderLeftWidth:4}}>
             <View style={{flexDirection: "row", alignSelf: "stretch", justifyContent: "space-between",}}>
                 <Text style={{color: '#ffffff', fontSize: mainStyle.text.fontSize*1.8}} >{trackingGroups[groupID].name}</Text>
-                <IconButton icon={({color}) => (symbolCache.close(color))} mode='contained'/>
+                <IconButton icon={({color}) => (symbolCache.close(color))} mode='contained' onPress={() => router.back()}/>
             </View>
-            <Button mode="elevated" onPress={() => console.log('Pressed')}>hi</Button>
+            <SegmentedButtons
+                value={intervalFnType}
+                onValueChange={setFnType}
+                buttons={[
+                {value:0, label:'Linear'},
+                {value:1, label:'Exponential'},
+                {value:2, label:'Constant'},
+                ]}
+            />
+            <Divider style={{margin:10}}/>
+
+            <Text style={{color: '#ffffff'}}>*Limit: how long you will be using these app today</Text>
+            <NumInput
+                lable = "Set limit: "
+                placeholder = "in minute"
+                defaultValue = {currentGroup.dailyLimit === Infinity? undefined:`${currentGroup.dailyLimit}`} 
+                onNumberChange={()=>{}}
+            />
+            <Text style={{color: '#ffffff'}}>*Interval: total amount of message send to remind you</Text>
+            <NumInput
+                lable = "Set interval: "
+                placeholder = "in minute"
+                defaultValue = {currentGroup.intervalAmount === 0? undefined:`${currentGroup.dailyLimit}`} 
+                onNumberChange={()=>{}}
+            />
+
+            <Text style={{color: '#ffffff'}}>*{sliderDiscription}</Text>
+            <View style={{flexDirection: "row", alignSelf: "stretch", justifyContent: "space-between", paddingBottom: 5}}>
+                <Text style={{color: '#ffffff'}}>{sliderStartNum}</Text>
+                <Text style={{color: '#ffffff'}}>{sliderEndNum}</Text>
+            </View>
+            <Host style={{ width: '100%', height: 10 }}>
+                <Slider value={sliderValue} min={sliderStartNum} max={sliderEndNum} onValueChange={setSliderValue} steps={0.001}/>
+            </Host>
+            
+            <Text style={{color: '#ffffff'}}>Current: {Math.round(sliderValue*1000)/1000}</Text>
+
+            <Text style={{color: '#ffffff'}}>Interval Trend:</Text>
+            <Text style={{color: '#ffffff'}}>{getIntervalPreview(currentGroup.intervalAmount, fnType, sliderValue)}</Text>
         </View>
     </SafeAreaView>
 }
 
 //<IconButton icon={() => (<SymbolView name={{android: 'settings', web: 'settings'}} fallback={<Text>?⚙️?</Text>}/>)} mode='contained-tonal'/>
+
+const getIntervalPreview = (intervalAmount, type, coefficient) => {
+    let preview = "";
+    const intervalNormal = 1/intervalAmount;
+    if (intervalAmount < 7){
+        for(let x = 1; x <= 1; x+=intervalNormal){
+            preview += normalTimerMath(type, coefficient, x) + ", ";
+        }
+    }else{
+        for(let x = 1; x <= 3; x++){
+            preview += normalTimerMath(type, coefficient, x*intervalNormal) + ", ";
+        }
+        preview += "..., "
+        for(let x = intervalAmount-2; x <= intervalAmount; x++){
+            preview += normalTimerMath(type, coefficient, x*intervalNormal) + ", ";
+        }
+    }
+    return preview;
+}
