@@ -14,7 +14,6 @@ export const appUsageProcess = async () => {
         const event = eventList[i];
         const currentApp = trackedApps[event.packageName];
         if(currentApp === undefined){continue;}
-
         else if(event.eventType === 1){//user open app
             currentApp.currentStatus = 1;
             currentApp.lastProcessed = event.timeStamp;
@@ -23,10 +22,11 @@ export const appUsageProcess = async () => {
             currentApp.currentStatus = 0;
             const timePassed = event.timeStamp - currentApp.lastProcessed;
             trackingGroups[currentApp.groupID].usageTimer += timePassed;
-            console.log(`user closed ${currentApp.packageName}, used for  ${timePassed}`);
+            console.log(`user closed ${event.packageName}, used for  ${timePassed}`);
         }else{
             continue;
         }
+        console.log(`app ${event.packageName} had a event`);
     }
 
 

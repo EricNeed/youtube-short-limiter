@@ -13,7 +13,7 @@ export function setupForegroundService(){
 
   ReactNativeForegroundService.add_task(() => update(), {
     // delay: 300000,
-    delay: 10000,
+    delay: 1000,
     onLoop: true,
     taskId: "appTracker",
     onError: (e) => console.log(`Error logging:`, e),

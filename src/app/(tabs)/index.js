@@ -51,6 +51,10 @@ export default function HomeScreen() {
           }}
         > Add New Group </Button> 
         
+        <Button
+          mode='text'
+          onPress={()=>router.push('../(modals)/instruction')}
+        >How does this work?</Button>
       </View>
     </SafeAreaView>
   );
