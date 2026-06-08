@@ -56,7 +56,7 @@ export default function ConfigureGroupPage(){
             newSettings.sliderValue = Math.floor(newValue*roundingFactor)/roundingFactor;
             break;
         case "dailyLimit":
-            newSettings.dailyLimit = newValue<1? 1:newValue;
+            newSettings.dailyLimit = newValue<1? Infinity:newValue;
             componentArgs[2][2] = newSettings.dailyLimit;
         }
 
