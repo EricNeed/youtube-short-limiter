@@ -17,6 +17,13 @@ export const normalTimerMath = (intervalType, coefficient, currentX) => {
     return nextIntervalNormalized;
 }
 
+//both inclusive
+export const coefficientValidRange = [
+    [-1, 0],
+    [0, 1],
+    [0, Infinity],
+    [-Infinity, Infinity]
+]
 
 /**
 let nextIntervalNormalized;

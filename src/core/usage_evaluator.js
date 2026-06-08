@@ -1,7 +1,7 @@
 import { getUsageEvents } from "expo-android-usagestats";
 import { sendTimerReminder } from "../utils/service_wrapper/notification";
 import { lastTimeStamp, trackedApps, trackingGroups, updateTimeStamp } from "../utils/settings/tracked_apps";
-import { normalTimerMath } from "../utils/shared_utils";
+import { normalTimerMath } from "../utils/shared_math";
 
 
 export const appUsageProcess = async () => {

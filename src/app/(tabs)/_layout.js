@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { mainStyle } from '../../components/scheme_style';
-import { symbolCache } from '../../components/symbol_cache';
+import { getSymbolConfigured } from '../../components/symbol_cache';
 
 export default function TabLayout() {
   // console.log("tab layout used");
@@ -16,21 +16,21 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({color, size}) => symbolCache.home(color, size)
+          tabBarIcon: ({color, size}) => getSymbolConfigured("home", color, size)
         }}
       />
       <Tabs.Screen
         name="data"
         options={{
           title: 'data',
-          tabBarIcon: ({color, size}) => symbolCache.dataUsage(color, size)
+          tabBarIcon: ({color, size}) => getSymbolConfigured("dataUsage", color, size)
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'settings',
-          tabBarIcon: ({color, size}) => symbolCache.settings(color, size)
+          tabBarIcon: ({color, size}) => getSymbolConfigured("settings", color, size)
         }}
       />
     </Tabs>

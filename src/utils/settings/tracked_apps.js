@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { normalTimerMath } from "../shared_utils";
+import { normalTimerMath } from "../shared_math";
 //later for loading config: check all app in trackedApps exsist
 
 
@@ -8,19 +8,20 @@ import { normalTimerMath } from "../shared_utils";
 export const trackingGroups = [];
 
 // create a new group, and return the index in trackingGroups
-const createTrackGroup = () => {
+export const createTrackGroup = () => {
     const index = trackingGroups.length;
     trackingGroups[index] = {
         dailyLimit: Infinity,
         usageTimer: 0,
         name: "un-named group",
-        notifyFnType: 0,  //0:linear, 1:expenential
-        notifyFnCoeff: 0, //slope in decimal or exponential decay value
 
+        notifyFnType: 2,  //0:linear, 1:expenential
+        notifyFnCoeff: 1, //slope in decimal or exponential decay value
         nextNotify: Infinity, //the time you should notify the user
         notifyUsed: 0, //the message already sent
         normalToLimit: 0, //from 0-1 to 0-dailyLimit
         intervalAmount: 0, //amount of message in total
+        isActive: false, //this group are not successfully configured
     };
     return index;
 }
@@ -72,14 +73,14 @@ const getUsageBeforeStart = (packageName) => {
  * @param {number} fnType 0: linear, 1: exponential, 2: constant(user configured interval), 3: constant(user configure amount of interval)
  * @param {number} limitTime the time limit of a group that user set
  */
-const configureGroup = (groupID, intervalAmount, coefficient, fnType, limitTime) => {
+export const configureGroup = (groupID, intervalAmount, coefficient, fnType, limitTime) => {
     // console.log("configuring");
     const currentApp = trackingGroups[groupID]
     currentApp.intervalAmount = intervalAmount;
     currentApp.notifyFnType = fnType;
     currentApp.dailyLimit = limitTime;
 
-    if(3){
+    if(fnType === 3){
         currentApp.notifyFnCoeff = limitTime/intervalAmount;
     }else{
         //basically, total up how big a slice of cake each interval want, and map that sum to the configured limit to slice the limit for each interval
@@ -88,13 +89,38 @@ const configureGroup = (groupID, intervalAmount, coefficient, fnType, limitTime)
         
         currentApp.normalToLimit = equasionPreview(intervalAmount, fnType, coefficient, limitTime);
     }
+
+    currentApp.isActive = true;
+    return true;
 }
 
+// return the scale factor from normalized value to actual value in minute
 export const equasionPreview = (intervalAmount, fnType, coefficient, limitTime) => {
     let total = 0;
-    for(let x = 0; x <= 1; x+=1/intervalAmount){
-        total += normalTimerMath(fnType, coefficient, x);
-        // console.log(total);
+    const normalXFactor = 1/intervalAmount;
+    for(let x = 0; x < intervalAmount; x++){
+        total += normalTimerMath(fnType, coefficient, x*normalXFactor);
+        // console.log(total + ", " + x);
     }
-    return limitTime/total
+    return limitTime/total    
+   
 }
+
+// const hi = () => {
+//     const numOfInterval = 10;
+//     const coefficient = 1;
+//     const type = 2;
+//     const limit = 10;
+
+//     console.log("run tester");
+//     let total = 0;
+//     let scaleFactor = equasionPreview(numOfInterval, type, coefficient, limit);
+//     console.log("tester, scale_facotr: " + scaleFactor);
+//     for(let i = 0; i < 1; i += 1/(numOfInterval)){
+//         let current = normalTimerMath(type, coefficient, i)*scaleFactor;
+//         total += current
+//         console.log(current);
+//     }
+//     console.log("total: " + total);
+// }
+// hi();

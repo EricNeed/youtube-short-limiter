@@ -45,6 +45,7 @@ export default function selectApp(){
         <FlatList
             data={appList}
             renderItem={displayButton}
+            style={{width: '95%'}}
         />
 
     </View>   

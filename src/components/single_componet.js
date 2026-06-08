@@ -2,7 +2,7 @@ import { useState } from "react";
 import { HelperText, TextInput } from "react-native-paper";
 import { mainStyle } from "./scheme_style";
 
-export const NumInput = ({lable, placeholder, defaultValue, onNumberChange}) => {
+export const NumInput = ({lable, placeholder, defaultValue, onNumberChange, onFocusOrBlur}) => {
     const [showError, setShowError] = useState(false);
 
     return <>
@@ -28,6 +28,8 @@ export const NumInput = ({lable, placeholder, defaultValue, onNumberChange}) => 
             }
             onNumberChange(inNumber);
             }}
+            onFocus={onFocusOrBlur !== undefined? () => onFocusOrBlur(true):()=>{}}
+            onBlur={onFocusOrBlur !== undefined? () => onFocusOrBlur(false):()=>{}}
         />
         <HelperText type="error" visible={showError}>
             Input can only be number

@@ -25,7 +25,6 @@ export function setUpStyle(isNight){
 
         switch_container: {//for switch in sittings
             flexDirection: "row",
-            width: wW,
             alignSelf: "stretch",
             justifyContent: "space-between",
             
