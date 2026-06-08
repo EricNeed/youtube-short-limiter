@@ -44,10 +44,14 @@ export const getListHook = () => {
 export const getAppListParsed = (selectedApps) =>{
     const allApps = getListHook();
     
+    console.log(selectedApps);
+
     //iterate through all the apps on the device and give it a "isTracked" lable
     for(let i = 0; i < allApps.length; i++){
         const app = allApps[i];
-        app.isTracked = !(selectedApps[app.packageName] === undefined);
+        const currentApp = selectedApps[app.packageName];
+        app.isTracked = !(currentApp === undefined);
+        app.groupID = currentApp?.groupID;
     }
 
     if(allApps === false){
@@ -58,7 +62,8 @@ export const getAppListParsed = (selectedApps) =>{
 
 
 
-export const filterOtherGroup = (arrayOApps, groupID) =>{
+//i found better solution damn it, i could just filter em on the fly and just not display them if not in that group
+const filterOtherGroup = (arrayOApps, groupID) =>{
     useEffect(()=>{
         //flipped because will remove item
         for(let i = arrayOApps.length-1; i <= 0 ; i++){

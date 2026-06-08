@@ -3,6 +3,7 @@ import { Button, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { mainStyle } from '../../components/scheme_style';
 import { appUsageProcess } from '../../core/usage_evaluator';
+import { trackedApps } from '../../utils/settings/tracked_apps';
 
 let datehiny = new Date();
 const timeSinceMidNight = (datehiny.getHours()*60 + datehiny.getMinutes())*60000;
@@ -21,6 +22,9 @@ export default function DataScreen() {
       }}/>
       <Button title='test3' onPress={async () => {
         console.log(await getAggregatedUsageStats(Date.now() - timeSinceMidNight, Date.now() - timeSinceMidNight + aDayInMillis, 0));
+      }}/>
+      <Button title='test4' onPress={async () => {
+        console.log(trackedApps);
       }}/>
     </SafeAreaView>
   );

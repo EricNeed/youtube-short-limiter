@@ -2,7 +2,7 @@ import { Host, Slider } from "@expo/ui/jetpack-compose";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { Button, Divider, IconButton, RadioButton, SegmentedButtons } from "react-native-paper";
+import { Button, Divider, IconButton, RadioButton, SegmentedButtons, TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mainStyle } from "../../components/scheme_style";
 import { NumInput } from "../../components/single_componet";
@@ -34,9 +34,9 @@ export default function ConfigureGroupPage(){
         intervalAmount: currentGroup.intervalAmount,
         dailyLimit: currentGroup.dailyLimit,
         sliderValue: currentGroup.notifyFnCoeff,
+        name: currentGroup.name,
         cannotSave: false,
     });
-
 
     const setSetting = (key, newValue) => {
         const newSettings = {...settings, [key]: newValue,};
@@ -74,8 +74,15 @@ export default function ConfigureGroupPage(){
         <View style={{flex:2, backgroundColor:'#333333aa', padding: 5, borderColor: '#555555', borderTopWidth:4, borderRightWidth:4, borderLeftWidth:4}}>
             <ScrollView>
                 <View style={mainStyle.switch_container}>
-                    <Text style={{color: '#ffffff', fontSize: mainStyle.text.fontSize*1.8}} >{trackingGroups[groupID].name}</Text>
-                    <IconButton icon={({color}) => (getSymbolConfigured("close", color))} mode='contained' onPress={() => router.back()}/>
+                    {/* <Text style={{color: '#ffffff', fontSize: mainStyle.text.fontSize*1.8}} >{trackingGroups[groupID].name}</Text> */}
+                    <TextInput
+                        dense={true}
+                        style={{backgroundColor: '#00000000', fontSize: mainStyle.text.fontSize*1.8, maxHeight:38}}
+                        textColor='#ffffff'
+                        value={settings.name}
+                        onChangeText={(value)=>setSetting("name", value)}
+                    />
+                    <IconButton icon={({color}) => getSymbolConfigured("close", color)} mode='contained' onPress={() => router.back()}/>
                 </View>
 
                 <SegmentedButtons
@@ -140,9 +147,11 @@ export default function ConfigureGroupPage(){
                     <Button mode='elevated' onPress={() => {
                         //check if anthing is invalid for last time
                         if((settings.intervalAmount === 0 && settings.fnType < 2) || settings.sliderValue > componentArgs[settings.segButonValue][2] || settings.sliderValue < componentArgs[settings.segButonValue][1] || settings.dailyLimit === Infinity){
+                            setSetting("cannotSave", true);
                             return;
                         }
                         configureGroup(groupID, settings.intervalAmount, settings.sliderValue, settings.fnType, settings.dailyLimit);
+                        currentGroup.name = settings.name;
                         router.back();
                     }}
                     > Save Changes </Button>

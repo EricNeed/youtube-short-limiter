@@ -12,6 +12,9 @@ export default function selectApp(){
 
     //flatlist call this function to draw each button
     const displayButton = ({item}) => {
+        if(!(item.groupID === undefined || item.groupID === groupID)){
+            return;
+        }
         return <View style={[mainStyle.switch_container, {borderColor:mainStyle.borderColor, borderBottomWidth:mainStyle.borderWidth}]}>
             <Text style={mainStyle.text}>{item.appName}</Text>
             <Switch 
