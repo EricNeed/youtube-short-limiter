@@ -17,7 +17,7 @@ export const createTrackGroup = () => {
 
         notifyFnType: 2,  //0:linear, 1:expenential
         notifyFnCoeff: 1, //slope in decimal or exponential decay value
-        nextNotify: Infinity, //the time you should notify the user
+        nextNotify: 0, //the time you should notify the user
         notifyUsed: 0, //the message already sent
         normalToLimit: 0, //from 0-1 to 0-dailyLimit
         intervalAmount: 0, //amount of message in total
@@ -80,17 +80,21 @@ export const configureGroup = (groupID, intervalAmount, coefficient, fnType, lim
     currentApp.notifyFnType = fnType;
     currentApp.dailyLimit = limitTime;
 
-    if(fnType === 3){
-        currentApp.notifyFnCoeff = limitTime/intervalAmount;
-    }else{
-        //basically, total up how big a slice of cake each interval want, and map that sum to the configured limit to slice the limit for each interval
-        //(after 2 days, only god shall understand this code)
-        currentApp.notifyFnCoeff = coefficient;
-        
-        currentApp.normalToLimit = equasionPreview(intervalAmount, fnType, coefficient, limitTime);
+    switch(fnType){  
+    case 2: 
+        intervalAmount = Math.floor(limitTime/coefficient);
+        break;
+    case 3:
+        coefficient = limitTime/intervalAmount;
+        break;
     }
+    currentApp.notifyFnCoeff = coefficient;
 
-    currentApp.isActive = true;
+    // console.log(`interval set to: ${intervalAmount}, ${fnType}, ${coefficient}, ${limitTime}, ${equasionPreview(intervalAmount, fnType, coefficient, limitTime)}, `);
+    currentApp.normalToLimit = equasionPreview(intervalAmount, fnType, coefficient, limitTime);
+
+    currentApp.isActive = groupHaveAppStill(groupID);
+
     return true;
 }
 
@@ -98,12 +102,24 @@ export const configureGroup = (groupID, intervalAmount, coefficient, fnType, lim
 export const equasionPreview = (intervalAmount, fnType, coefficient, limitTime) => {
     let total = 0;
     const normalXFactor = 1/intervalAmount;
+    //basically, total up how big a slice of cake each interval want, and map that sum to the configured limit to slice the limit for each interval
+    //(after 2 days, only god shall understand this code)
     for(let x = 0; x < intervalAmount; x++){
         total += normalTimerMath(fnType, coefficient, x*normalXFactor);
         // console.log(total + ", " + x);
     }
     return limitTime/total    
    
+}
+
+
+//make sure the group only turn active when it have app to track
+export const groupHaveAppStill = (groupID) => {
+    const currentGroup = trackingGroups[groupID];
+    for(const appProp of Object.values(trackedApps)){
+        if(appProp.groupID === groupID){return true;}
+    }
+    currentGroup.isActive = false;
 }
 
 // const hi = () => {

@@ -3,7 +3,7 @@ import { FlatList, Text, View } from "react-native";
 import { Switch } from "react-native-paper";
 import { mainStyle } from "../../components/scheme_style";
 import { getAppListParsed } from "../../utils/service_wrapper/user_stats";
-import { getSelectedApps } from "../../utils/settings/tracked_apps";
+import { getSelectedApps, groupHaveAppStill } from "../../utils/settings/tracked_apps";
 
 export default function selectApp(){
     const {groupID} = useLocalSearchParams();
@@ -24,12 +24,14 @@ export default function selectApp(){
                     //adding or removing app from a tracking list
                     if(item.isTracked){
                         delete trackedApps[item.packageName];
+                        trackingGroups[groupID] = groupHaveAppStill(groupID);
                     }else{
                         const currentListItem = trackedApps[item.packageName] = {};
                         currentListItem.appName = item.appName;
                         currentListItem.category = item.category;
                         currentListItem.groupID = groupID;
-                        currentListItem.lastOpened = Date.now();
+                        currentListItem.lastProcessed = Date.now();
+                        currentListItem.currentStatus = 0
                     }
                     updateUIApps();
                 }}

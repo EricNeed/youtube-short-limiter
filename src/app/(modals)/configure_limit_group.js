@@ -184,7 +184,7 @@ const getIntervalPreview = (intervalAmount, type, coefficient, limitTime) => {
 
     const scaleFactor = equasionPreview(intervalAmount, type, coefficient, limitTime);
     const intervalNormal = 1/intervalAmount;
-    const doMath = (x) => preview += Math.round((normalTimerMath(type, coefficient, x*intervalNormal)*scaleFactor)*100)/100 + ", "
+    const doMath = (x) => preview += Math.round((normalTimerMath(type, coefficient, x*intervalNormal)*scaleFactor)*10)/10 + ", "
 
     let preview = "";
     if(intervalAmount > 6){

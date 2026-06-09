@@ -16,7 +16,7 @@ export default function HomeScreen() {
     return <View style={[mainStyle.switch_container, {padding: 5, backgroundColor: '#222222', margin: 6, borderTopLeftRadius:!index?15:0, borderTopRightRadius:!index?15:0}]}>
       <View>
         <Text style={[mainStyle.text, {fontSize: mainStyle.text.fontSize * 2}]}>{item.name}</Text>
-        {item.isActive?<Text style={{color:'#006600'}}>{item.usageTimer/60000} minute out of {item.dailyLimit}</Text>:<Text style={{color:'#660000'}}>This group is currently inactive</Text >}
+        {item.isActive?<Text style={{color:'#006600'}}>{Math.floor(item.usageTimer/600)/100} minute out of {item.dailyLimit}</Text>:<Text style={{color:'#660000'}}>This group is currently inactive</Text >}
       </View>
       <IconButton icon={({color}) => (getSymbolConfigured("edit", color))} onPress={()=>router.push(`../(modals)/configure_limit_group?groupID=${index}`)}/>
     </View>
@@ -25,6 +25,11 @@ export default function HomeScreen() {
   useFocusEffect(
     useCallback(()=>{
       doARefresh((prev) => !prev);
+
+      const intervalObj = setInterval(() =>doARefresh((prev) => !prev), 10000);
+      return () => {
+        clearInterval(intervalObj);
+      };
     }, [])
   );
 
