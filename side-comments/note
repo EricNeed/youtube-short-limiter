@@ -42,7 +42,7 @@ framework versions:
 
 
 add next:
-    smt that allow me to kept compact data, for tracking spcific time
     npx expo install @react-native-community/slider
+    npm i react-native-mmkv
 
     

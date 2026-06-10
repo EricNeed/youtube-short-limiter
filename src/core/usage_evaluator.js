@@ -9,6 +9,7 @@ import { normalTimerMath } from "../utils/shared_math";
 let throttledCount = 0;
 
 let smallestTimeLeft = Infinity;
+let lastUpdateInterval = usageTaskDefaultConfig.delay;
 
 export const appUsageProcess = async () => {
     //getting the times
@@ -102,6 +103,13 @@ export const appUsageProcess = async () => {
         }
     }
 
+
+    if(smallestTimeLeft < usageTaskDefaultConfig.delay){
+        ReactNativeForegroundService.update_task(()=>appUsageProcess(), {...usageTaskDefaultConfig, delay: smallestTimeLeft});
+        lastUpdateInterval = smallestTimeLeft;
+    }else if(lastUpdateInterval < usageTaskDefaultConfig.delay){
+        ReactNativeForegroundService.update_task(()=>appUsageProcess(), usageTaskDefaultConfig);
+    }
 
     updateTimeStamp();
 }
