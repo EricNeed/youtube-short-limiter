@@ -34,14 +34,6 @@ export const trackedApps = {};
 
 
 
-//the timestamp of last time getting the usage
-export let lastTimeStamp = Date.now();
-export const updateTimeStamp = () => {
-    lastTimeStamp = Date.now();
-}
-
-
-
 //a new components for provide the context
 const SelectedAppContext = createContext();
 export const SelectedAppProvider = ({children}) => {
@@ -61,6 +53,14 @@ export const getSelectedApps = () => useContext(SelectedAppContext);
 // get the usage of a app before it start getting tracked or before program launch
 const getUsageBeforeStart = (packageName) => {
 
+}
+
+
+
+//the timestamp of last time getting the usage
+export let lastTimeStamp = Date.now();
+export const updateTimeStamp = () => {
+    lastTimeStamp = Date.now();
 }
 
 

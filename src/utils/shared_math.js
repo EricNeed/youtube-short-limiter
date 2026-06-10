@@ -7,7 +7,8 @@ export const normalTimerMath = (intervalType, coefficient, currentX) => {
             nextIntervalNormalized = 1 + coefficient * currentX;
             break;
         case 1://exponential
-            nextIntervalNormalized = coefficient ** currentX;
+            // nextIntervalNormalized = coefficient ** currentX;// change this to cubic now
+            nextIntervalNormalized = -1*coefficient*(currentX**3)+1;
             break;
         case 2: case 3: //constant
             nextIntervalNormalized = coefficient;

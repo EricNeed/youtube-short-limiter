@@ -1,15 +1,43 @@
-import { getUsageEvents } from "expo-android-usagestats";
+import ReactNativeForegroundService from "@supersami/rn-foreground-service";
+import { getUsageEvents, hasUsageStatsPermission } from "expo-android-usagestats";
 import { sendTimerReminder } from "../utils/service_wrapper/notification";
+import { usageTaskDefaultConfig } from "../utils/settings/the_ultimate_circular_deps_solver";
 import { lastTimeStamp, trackedApps, trackingGroups, updateTimeStamp } from "../utils/settings/tracked_apps";
 import { normalTimerMath } from "../utils/shared_math";
 
+// check if user turn off their phone, the more times check as throttled, the longer the task sleeps
+let throttledCount = 0;
+
+let smallestTimeLeft = Infinity;
 
 export const appUsageProcess = async () => {
     //getting the times
     const timeNow = Date.now();
+    
 
+    //check if permission has returned
+    if(!!throttledCount){
+        if(await hasUsageStatsPermission()){
+            throttledCount = 0;
+        }else{
+            const nextUpdateTime = (throttledCount>15?15:throttledCount)*30000; //thruttle start at 30 second and increase as thruttle for longer time, to a max of 15
+            console.log(`delay calculation: ${throttledCount}, ${nextUpdateTime}`);
+            ReactNativeForegroundService.update_task({...usageTaskDefaultConfig, delay: nextUpdateTime});
+            throttledCount++;
+            console.log(`screen is off, usage update thruttled, next update in ${nextUpdateTime} millis`);
+            return;
+        }
+    }
+    //if the screen is off, it will deny userstats permission, and cause a error
+    let eventList;
+    try{
+        eventList = await getUsageEvents(lastTimeStamp, timeNow);
+    }catch(error){
+        console.log("throttled, count is now 1");
+        throttledCount = 1;
+        return;
+    }
 
-    const eventList = await getUsageEvents(lastTimeStamp, timeNow);
 
     for(let i = 0; i < eventList.length; i++){
         const event = eventList[i];
@@ -41,10 +69,25 @@ export const appUsageProcess = async () => {
     }
 
 
+    //did this so the for loop can re-configure if the usageTimer is more than one interval ahead of nextNotify
+    const updateNextNotify = (appGroup) => {
+        const nextIntervalNormalized = normalTimerMath(appGroup.notifyFnType, appGroup.notifyFnCoeff, (appGroup.notifyUsed+=1) / appGroup.intervalAmount);
+        const nextInterval = nextIntervalNormalized * appGroup.normalToLimit * 60000;// 60000 is to convert min to millis
+        // console.log(`next interval: ${nextIntervalNormalized * appGroup.normalToLimit * 60000}, lastNotify: ${appGroup.nextNotify}, nextNotify: ${appGroup.nextNotify + nextInterval}`);
+        appGroup.nextNotify += nextInterval;
+    }
+
+
     // check if any group need send notification
     for(const appGroup of trackingGroups){
         // console.log(`currentTimer: ${appGroup.usageTimer}, notifyTimer: ${appGroup.nextNotify}`);
-        if(!appGroup.isActive || appGroup.usageTimer < appGroup.nextNotify){continue;}
+        const timeRemain = appGroup.nextNotify - appGroup.usageTimer;
+        if(!appGroup.isActive){
+            continue;
+        }else if(timeRemain > 0){
+            smallestTimeLeft = timeRemain<smallestTimeLeft?timeRemain:smallestTimeLeft;
+            continue;
+        }
 
         //send message
         const currentUsage = Math.floor(appGroup.usageTimer/60000)
@@ -52,14 +95,9 @@ export const appUsageProcess = async () => {
 
 
         //set timer for next interval
-        const nextIntervalNormalized = normalTimerMath(appGroup.notifyFnType, appGroup.notifyFnCoeff, (appGroup.notifyUsed+=1) / appGroup.intervalAmount);
-        const nextInterval = nextIntervalNormalized * appGroup.normalToLimit * 60000;
-
-        // console.log(`next interval: ${nextIntervalNormalized * appGroup.normalToLimit * 60000}, lastNotify: ${appGroup.nextNotify}, nextNotify: ${appGroup.nextNotify + nextInterval}`);
-
-        appGroup.nextNotify += nextInterval // 60000 is to convert min to millis
-        
-
+        while(appGroup.usageTimer >= appGroup.nextNotify){
+            updateNextNotify(appGroup);
+        }
     }
 
 
