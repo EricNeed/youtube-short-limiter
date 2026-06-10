@@ -15,6 +15,8 @@ export const appUsageProcess = async () => {
     const timeNow = Date.now();
     
 
+    console.log("getting app usage");
+
     //check if permission has returned
     if(!!throttledCount){
         if(await hasUsageStatsPermission()){
@@ -22,7 +24,7 @@ export const appUsageProcess = async () => {
         }else{
             const nextUpdateTime = (throttledCount>15?15:throttledCount)*30000; //thruttle start at 30 second and increase as thruttle for longer time, to a max of 15
             console.log(`delay calculation: ${throttledCount}, ${nextUpdateTime}`);
-            ReactNativeForegroundService.update_task({...usageTaskDefaultConfig, delay: nextUpdateTime});
+            ReactNativeForegroundService.update_task(()=>appUsageProcess(), {...usageTaskDefaultConfig, delay: nextUpdateTime});
             throttledCount++;
             console.log(`screen is off, usage update thruttled, next update in ${nextUpdateTime} millis`);
             return;

@@ -12,7 +12,7 @@ export function setupForegroundService(){
     }
   })
 
-  ReactNativeForegroundService.add_task(() => update(), usageTaskDefaultConfig);
+  ReactNativeForegroundService.add_task(() => appUsageProcess(), usageTaskDefaultConfig);
 
   ReactNativeForegroundService.start({
     id: 1123,//never change this to a string again 
@@ -24,13 +24,4 @@ export function setupForegroundService(){
     color: "#000000",
     ServiceType: "1",
   });
-}
-
-
-
-
-//the actual function that foreground service runs
-export function update(){
-  console.log("getting app usage");
-  appUsageProcess();
 }
