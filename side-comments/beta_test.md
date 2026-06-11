@@ -7,5 +7,7 @@ simplfy the trend to the the tenth
 # inexperienced tester:
 
 ## complaints: 
-
+By Cord:
 ## improvement:
+the term like "constant", "exponetial" are hard to understand, use easier terms
+give button and interactable element more distinct coloring
