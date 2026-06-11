@@ -11,7 +11,12 @@ let throttledCount = 0;
 let smallestTimeLeft = Infinity;
 let lastUpdateInterval = usageTaskDefaultConfig.delay;
 
+//after change the delay of foreground task, it will immediately fire a rerun, so use this to skip the immediate rerun
+let changedInterval = true;
+
 export const appUsageProcess = async () => {
+    if(changedInterval){changedInterval = false; return;}
+
     //getting the times
     const timeNow = Date.now();
     
@@ -22,10 +27,11 @@ export const appUsageProcess = async () => {
     if(!!throttledCount){
         if(await hasUsageStatsPermission()){
             throttledCount = 0;
+            lastUpdateInterval = usageTaskDefaultConfig.delay/2; // force it to reconfigure the interval
+            console.log("permission granted again, back on track");
         }else{
             const nextUpdateTime = (throttledCount>15?15:throttledCount)*30000; //thruttle start at 30 second and increase as thruttle for longer time, to a max of 15
-            console.log(`delay calculation: ${throttledCount}, ${nextUpdateTime}`);
-            ReactNativeForegroundService.update_task(()=>appUsageProcess(), {...usageTaskDefaultConfig, delay: nextUpdateTime});
+            changeUpdateInterval(nextUpdateTime);
             throttledCount++;
             console.log(`screen is off, usage update thruttled, next update in ${nextUpdateTime} millis`);
             return;
@@ -87,8 +93,9 @@ export const appUsageProcess = async () => {
         const timeRemain = appGroup.nextNotify - appGroup.usageTimer;
         if(!appGroup.isActive){
             continue;
-        }else if(timeRemain > 0){
-            smallestTimeLeft = timeRemain<smallestTimeLeft?timeRemain:smallestTimeLeft;
+        //check if the notification need smaller interval
+        }else if(timeRemain > 0 && timeRemain<smallestTimeLeft && timeRemain<lastUpdateInterval){
+            smallestTimeLeft = timeRemain;
             continue;
         }
 
@@ -103,21 +110,26 @@ export const appUsageProcess = async () => {
         }
     }
 
-
+    //shorten the delay if a group need to send message early
     if(smallestTimeLeft < usageTaskDefaultConfig.delay){
-        ReactNativeForegroundService.update_task(()=>appUsageProcess(), {...usageTaskDefaultConfig, delay: smallestTimeLeft});
+        changeUpdateInterval(smallestTimeLeft);
         lastUpdateInterval = smallestTimeLeft;
     }else if(lastUpdateInterval < usageTaskDefaultConfig.delay){
-        ReactNativeForegroundService.update_task(()=>appUsageProcess(), usageTaskDefaultConfig);
+        changeUpdateInterval();
+        lastUpdateInterval = smallestTimeLeft;
     }
 
     updateTimeStamp();
 }
 
-    // let dateThingy = new Date();//get the current time
-    //check if it has been more than a day to update the time
-    // const timeSinceMidNight = (dateThingy.getHours()*60 + dateThingy.getMinutes())*60000;
-    // if(timeSinceMidNight > 86400000){
-    //     dateThingy = new Date();
 
-    // }
+
+const changeUpdateInterval = (newDelay=null) => {
+    console.log(`update interval changed to ${newDelay===null?usageTaskDefaultConfig.delay:newDelay} millis`);
+    if(newDelay === null){
+        ReactNativeForegroundService.update_task(()=>appUsageProcess(), usageTaskDefaultConfig);
+    }else{
+        ReactNativeForegroundService.update_task(()=>appUsageProcess(), {...usageTaskDefaultConfig, delay: newDelay});
+    }
+    changedInterval = true;
+}

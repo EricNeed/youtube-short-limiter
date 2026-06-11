@@ -2,6 +2,8 @@ import ReactNativeForegroundService from "@supersami/rn-foreground-service";
 import { appUsageProcess } from "../../core/usage_evaluator";
 import { usageTaskDefaultConfig } from "../settings/the_ultimate_circular_deps_solver";
 
+const hi = {appUsageProcess}
+
 export function setupForegroundService(){
   ReactNativeForegroundService.register({
     config: {
@@ -25,3 +27,17 @@ export function setupForegroundService(){
     ServiceType: "1",
   });
 }
+
+// let lastTimeStamp = Date.now();
+// let currentIteration = 0;
+// const testService = () => {
+//   const currentTime = Date.now();
+//   console.log(`Interval: ${currentTime-lastTimeStamp}`);
+//   lastTimeStamp = currentTime;
+//   currentIteration++;
+//   if(currentIteration === 3){
+//     console.log("change deployed");
+//     ReactNativeForegroundService.update_task(()=>testService(), {...usageTaskDefaultConfig, delay: 30000});
+//   }
+  
+// }
