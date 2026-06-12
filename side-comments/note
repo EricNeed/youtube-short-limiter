@@ -3,6 +3,8 @@ EAS build precedure
     npx expo-doctor@latest
     eas build --platform android --profile development
     
+Release build:
+    eas build --platform android --profile preview
 
 extra dependancies(that blank template not include):
     npx expo install  expo-android-usagestats @supersami/rn-foreground-service expo-notifications

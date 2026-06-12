@@ -12,7 +12,7 @@
         "foregroundImage": "./storge/assets/thumbnail_low_res.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.shortlimiter",
+      "package": "com.ericni.shortlimiter",
       "permissions": [
         "PACKAGE_USAGE_STATS",
         "FOREGROUND_SERVICE",
