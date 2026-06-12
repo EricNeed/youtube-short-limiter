@@ -74,7 +74,7 @@ export const appUsageProcess = async () => {
         const timePassed = timeNow - appProp.lastProcessed;
         appProp.lastProcessed = timeNow;
         trackingGroups[appProp.groupID].usageTimer += timePassed;
-        // console.log(`used ${appProp.appName} for ${timePassed}`);
+        console.log(`used ${appProp.appName} for ${timePassed}`);
     }
 
 
@@ -89,13 +89,13 @@ export const appUsageProcess = async () => {
 
     // check if any group need send notification
     for(const appGroup of trackingGroups){
-        // console.log(`currentTimer: ${appGroup.usageTimer}, notifyTimer: ${appGroup.nextNotify}`);
+        console.log(`currentTimer: ${appGroup.usageTimer}, notifyTimer: ${appGroup.nextNotify}`);
         const timeRemain = appGroup.nextNotify - appGroup.usageTimer;
         if(!appGroup.isActive){
             continue;
         //check if the notification need smaller interval
-        }else if(timeRemain > 0 && timeRemain<smallestTimeLeft && timeRemain<lastUpdateInterval){
-            smallestTimeLeft = timeRemain;
+        }else if(timeRemain > 0){
+            smallestTimeLeft = timeRemain<smallestTimeLeft?timeRemain:smallestTimeLeft;
             continue;
         }
 
@@ -116,7 +116,7 @@ export const appUsageProcess = async () => {
         lastUpdateInterval = smallestTimeLeft;
     }else if(lastUpdateInterval < usageTaskDefaultConfig.delay){
         changeUpdateInterval();
-        lastUpdateInterval = smallestTimeLeft;
+        lastUpdateInterval = usageTaskDefaultConfig.delay;
     }
 
     updateTimeStamp();
