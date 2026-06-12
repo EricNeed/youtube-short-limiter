@@ -6,10 +6,12 @@ import { getAppListParsed } from "../../utils/service_wrapper/user_stats";
 import { getSelectedApps, groupHaveAppStill } from "../../utils/settings/tracked_apps";
 
 export default function selectApp(){
+    const {groupIDStr} = useLocalSearchParams();
 
-    console.log("rendering app list");
+    const groupID = Number(groupIDStr);
 
-    const {groupID} = useLocalSearchParams();
+    // console.log("rendering app list for group: ", typeof groupID, typeof groupIDStr);
+
     const {trackedApps, refreshListener, updateUIApps, trackingGroups} = getSelectedApps();
     const appList = getAppListParsed(trackedApps);
 
@@ -26,11 +28,8 @@ export default function selectApp(){
                 onValueChange={()=>{
                     //adding or removing app from a tracking list
                     if(item.isTracked){
-                        console.log("delete selected 1");
                         delete trackedApps[item.packageName];
-                        console.log("delete selected 2");
                         trackingGroups[groupID].isActive = groupHaveAppStill(groupID);
-                        console.log("delete selected 3");
                     }else{
                         const currentListItem = trackedApps[item.packageName] = {};
                         currentListItem.appName = item.appName;

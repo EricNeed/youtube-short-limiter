@@ -17,6 +17,7 @@ const symbolConfigs = {
     close: [{android: 'close', web: 'close'}, <Text>?📉?</Text>],
     add: [{android: 'add', web: 'add'}, <Text>?+?</Text>],
     edit: [{android: 'edit', web: 'edit'}, <Text>?✏️?</Text>],
+    more: [{android: 'more_horiz', web: 'more_horiz'}, <Text>?⋯?</Text>]
 }
 
 export const getSymbolConfigured = (name, color, size=symbolSize) => {

@@ -7,7 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { mainStyle } from "../../components/scheme_style";
 import { NumInput } from "../../components/single_componet";
 import { getSymbolConfigured } from "../../components/symbol_cache";
-import { configureGroup, equasionPreview, getSelectedApps } from "../../utils/settings/tracked_apps";
+import { configureGroup, deleteGroup, equasionPreview, getSelectedApps } from "../../utils/settings/tracked_apps";
 import { coefficientValidRange, normalTimerMath } from "../../utils/shared_math";
 
 const componentArgs = [//[sliderDiscription, sliderStartNum, sliderEndNum, displayRoundFactor],
@@ -19,14 +19,16 @@ const componentArgs = [//[sliderDiscription, sliderStartNum, sliderEndNum, displ
 
 
 export default function ConfigureGroupPage(){
-    const {groupID} = useLocalSearchParams();
+    const {groupIDStr} = useLocalSearchParams();
+    const groupID = Number(groupIDStr);
     
     const {updateUIApps, trackingGroups, trackedApps} = getSelectedApps();
     const currentGroup = trackingGroups[groupID];
 
     // console.log(`current group`, currentGroup);
+    // console.log("configure setting for group", groupID);
 
-    const [isInputing, setFocusState] = useState(false);
+    const [isFullScreen, setFullScreen] = useState(false);
     const [settings, changeSettings] = useState({
         segButonValue: currentGroup.notifyFnType===3?2:currentGroup.notifyFnType,
         isConstInterval: (currentGroup.notifyFnType!==3), //choose between "const interval" or "const amount of interval", default is true(for new created group)
@@ -69,7 +71,7 @@ export default function ConfigureGroupPage(){
     
 
     return <SafeAreaView style={{flex:1}}>
-        {!isInputing && <View style={{flex:1}}></View>}
+        {!isFullScreen && <View style={{flex:1}}></View>}
 
         <View style={{flex:2, backgroundColor:'#333333aa', padding: 5, borderColor: '#555555', borderTopWidth:4, borderRightWidth:4, borderLeftWidth:4}}>
             <ScrollView>
@@ -89,9 +91,9 @@ export default function ConfigureGroupPage(){
                     value={settings.segButonValue}
                     onValueChange={(value) => setSetting("segButonValue", value)}
                     buttons={[
-                        {value:2, label:'Constant'},
-                        {value:0, label:'Linear'},
-                        {value:1, label:'Exponential'},
+                        {value:2, label:'Fixed'},
+                        {value:0, label:'Gradual'},
+                        {value:1, label:'Escalating'},
                     ]}
                 />
                 <Divider style={{margin:10}}/>
@@ -102,7 +104,7 @@ export default function ConfigureGroupPage(){
                     placeholder = "in minute"
                     defaultValue = {settings.dailyLimit === Infinity? undefined:`${settings.dailyLimit}`} 
                     onNumberChange={(value)=>setSetting("dailyLimit", value)}
-                    onFocusOrBlur={(isFocused)=>setFocusState(isFocused)}
+                    onFocusOrBlur={(isFocused)=>setFullScreen(isFocused)}
                 />
 
                 {settings.fnType !== 2 && <>
@@ -112,7 +114,7 @@ export default function ConfigureGroupPage(){
                         placeholder = "in minute"
                         defaultValue = {settings.intervalAmount === 0? undefined:`${settings.intervalAmount}`} 
                         onNumberChange={(value)=>setSetting("intervalAmount", value)}
-                        onFocusOrBlur={(isFocused)=>setFocusState(isFocused)}
+                        onFocusOrBlur={(isFocused)=>setFullScreen(isFocused)}
                     />
                 </>}
 
@@ -142,8 +144,8 @@ export default function ConfigureGroupPage(){
                 {settings.cannotSave && <Text style={{alignSelf: 'center', color: '#9b0000'}}>
                     Config cannot be saved: invalid arguments
                 </Text>}
-                <View style={[mainStyle.switch_container, {padding: 15}]}>
-                    <Button mode='elevated' onPress={() => router.push(`../select_app?groupID=${groupID}`)}> Select Apps </Button>
+                <View style={[mainStyle.switch_container, {paddingTop: 15, paddingBottom: 15}]}>
+                    <Button mode='elevated' onPress={() => router.push(`../select_app?groupIDStr=${groupID}`)}> Select Apps </Button>
                     <Button mode='elevated' onPress={() => {
                         //check if anthing is invalid for last time
                         if((settings.intervalAmount === 0 && settings.fnType < 2) || settings.sliderValue > componentArgs[settings.segButonValue][2] || settings.sliderValue < componentArgs[settings.segButonValue][1] || settings.dailyLimit === Infinity){
@@ -155,7 +157,28 @@ export default function ConfigureGroupPage(){
                         router.back();
                     }}
                     > Save Changes </Button>
+                    <IconButton icon={({color}) => getSymbolConfigured("more", color)} style={{margin:0}} mode='contained' onPress={() => setFullScreen((value)=>(!value))}/>
                 </View>
+
+                {isFullScreen && <>
+                    <Text style={{color:'#880000'}}>Type "Sun Rise" to delete group</Text>
+                    <TextInput 
+                        label= 'Delete group'
+                        placeholder='Type "Sun Rise" to delete'
+                        mode='outlined'
+                        dense={true}
+                        style={{backgroundColor: '#000000'}}
+                        activeOutlineColor="#ff0000"
+                        outlineColor="#880000"
+                        textColor='#ffffff'
+                        onChangeText={(value)=>{
+                            if(value === "Sun Rise"){
+                                deleteGroup(groupID);
+                                router.back()
+                            }
+                        }}
+                    />
+                </>}
             </ScrollView>
         </View>
     </SafeAreaView>

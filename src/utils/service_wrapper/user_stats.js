@@ -44,7 +44,8 @@ export const getListHook = () => {
 export const getAppListParsed = (selectedApps) =>{
     const allApps = getListHook();
     
-    console.log(selectedApps);
+    // console.log("selected apps from parser: ", selectedApps);
+
 
     //iterate through all the apps on the device and give it a "isTracked" lable
     for(let i = 0; i < allApps.length; i++){

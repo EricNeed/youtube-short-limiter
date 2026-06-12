@@ -18,7 +18,7 @@ export default function HomeScreen() {
         <Text style={[mainStyle.text, {fontSize: mainStyle.text.fontSize * 2}]}>{item.name}</Text>
         {item.isActive?<Text style={{color:'#006600'}}>{Math.floor(item.usageTimer/600)/100} minute out of {item.dailyLimit}</Text>:<Text style={{color:'#660000'}}>This group is currently inactive</Text >}
       </View>
-      <IconButton icon={({color}) => (getSymbolConfigured("edit", color))} onPress={()=>router.push(`../(modals)/configure_limit_group?groupID=${index}`)}/>
+      <IconButton icon={({color}) => (getSymbolConfigured("edit", color))} onPress={()=>router.push(`../(modals)/configure_limit_group?groupIDStr=${index}`)}/>
     </View>
   }
 
@@ -51,7 +51,7 @@ export default function HomeScreen() {
           icon={({color}) => getSymbolConfigured("add", color)}
           onPress={() => {
             const groupID = createTrackGroup();
-            router.push(`../(modals)/configure_limit_group?groupID=${groupID}`)
+            router.push(`../(modals)/configure_limit_group?groupIDStr=${groupID}`)
             doARefresh(!refreshListener);
           }}
         > Add New Group </Button> 

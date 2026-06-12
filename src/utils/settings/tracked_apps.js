@@ -122,6 +122,24 @@ export const groupHaveAppStill = (groupID) => {
     currentGroup.isActive = false;
 }
 
+export const deleteGroup = (groupID) => {
+    // console.log("removing group", groupID, typeof groupID);
+    trackingGroups.splice(groupID, 1);
+    for(const [key, appPropertie] of Object.entries(trackedApps)){
+        const appGroupID = appPropertie.groupID;
+        if(appGroupID === groupID){
+            delete trackedApps[key];
+            // console.log("is equal");
+
+        //shift all the app's groupID by 1, if its group ID is after the deleted groupID
+        }else if(appGroupID > groupID){
+            // console.log("is greater");
+            trackedApps[key].groupID = appGroupID-1; 
+        }
+    }
+    // console.log("new trackedApps: ", trackedApps);
+}
+
 // const hi = () => {
 //     const numOfInterval = 10;
 //     const coefficient = 1;
